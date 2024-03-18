@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="Abrevehoi" format="2">
+  <advance width="688"/>
+  <unicode hex="1EB2"/>
+  <outline>
+    <component base="Abreve"/>
+    <component base="sym_hoi" xOffset="147" yOffset="74"/>
+  </outline>
+</glyph>

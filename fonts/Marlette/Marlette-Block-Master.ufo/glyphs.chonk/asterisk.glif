@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="asterisk" format="2">
+  <advance width="698"/>
+  <unicode hex="002A"/>
+  <outline>
+    <component base="sym_asteriskbar" xScale="0.49293371366137" xyScale="0.8700668675084767" yxScale="-0.8700668675084767" yScale="0.49293371366137" xOffset="679" yOffset="109"/>
+    <component base="sym_asteriskbar" xOffset="281" yOffset="-43"/>
+    <component base="sym_asteriskbar" xScale="0.4906959872685116" xyScale="-0.8713308488046214" yxScale="0.8713308488046214" yScale="0.4906959872685116" xOffset="-49" yOffset="230"/>
+  </outline>
+</glyph>

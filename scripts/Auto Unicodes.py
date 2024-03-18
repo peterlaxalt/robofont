@@ -1,0 +1,2 @@
+font = CurrentFont()
+font.autoUnicodes()

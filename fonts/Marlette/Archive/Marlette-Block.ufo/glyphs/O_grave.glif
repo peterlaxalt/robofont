@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="Ograve" format="2">
+  <advance width="699"/>
+  <unicode hex="00D2"/>
+  <guideline x="458" y="379" angle="90" identifier="buasEXq0Wi"/>
+  <outline>
+    <component base="O"/>
+    <component base="acute" xScale="-1" xOffset="478"/>
+  </outline>
+</glyph>

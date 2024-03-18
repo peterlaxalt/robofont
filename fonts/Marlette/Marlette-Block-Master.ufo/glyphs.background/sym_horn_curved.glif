@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="sym_horn_curved" format="2">
+  <advance width="206"/>
+  <outline>
+    <contour>
+      <point x="218" y="809" type="line" smooth="yes"/>
+      <point x="218" y="849"/>
+      <point x="190" y="868"/>
+      <point x="147" y="868" type="curve"/>
+      <point x="113" y="868"/>
+      <point x="94" y="847"/>
+      <point x="94" y="824" type="curve"/>
+      <point x="94" y="799"/>
+      <point x="116" y="780"/>
+      <point x="147" y="780" type="curve"/>
+      <point x="168" y="780"/>
+      <point x="191" y="797"/>
+      <point x="191" y="809" type="curve"/>
+      <point x="204" y="809" type="line"/>
+      <point x="204" y="765"/>
+      <point x="158" y="750"/>
+      <point x="141" y="750" type="curve"/>
+      <point x="218" y="750" type="line"/>
+    </contour>
+  </outline>
+</glyph>

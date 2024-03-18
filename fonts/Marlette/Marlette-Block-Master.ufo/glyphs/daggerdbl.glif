@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="daggerdbl" format="2">
+  <advance width="452"/>
+  <unicode hex="2021"/>
+  <guideline x="256" y="715" angle="0" identifier="rGLd6rndxl"/>
+  <outline>
+    <component base="sym_asteriskbar" xOffset="137" yOffset="-42"/>
+    <component base="hyphen" yOffset="60"/>
+    <component base="hyphen" yOffset="-80"/>
+  </outline>
+</glyph>

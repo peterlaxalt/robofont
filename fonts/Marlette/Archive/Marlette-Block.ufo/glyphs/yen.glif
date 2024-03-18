@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="yen" format="2">
+  <advance width="704"/>
+  <unicode hex="00A5"/>
+  <outline>
+    <contour>
+      <point x="515" y="332" type="curve"/>
+      <point x="515" y="364" type="line"/>
+      <point x="431" y="362"/>
+      <point x="422" y="362"/>
+      <point x="328" y="362" type="curve" smooth="yes"/>
+      <point x="218" y="362"/>
+      <point x="245" y="362"/>
+      <point x="104" y="364" type="curve"/>
+      <point x="104" y="332" type="line"/>
+      <point x="245" y="334"/>
+      <point x="218" y="334"/>
+      <point x="328" y="334" type="curve" smooth="yes"/>
+      <point x="422" y="334"/>
+      <point x="431" y="334"/>
+    </contour>
+    <contour>
+      <point x="319" y="426" type="line"/>
+      <point x="214" y="426"/>
+      <point x="241" y="426"/>
+      <point x="104" y="428" type="curve"/>
+      <point x="104" y="396" type="line"/>
+      <point x="241" y="398"/>
+      <point x="214" y="398"/>
+      <point x="319" y="398" type="curve"/>
+    </contour>
+    <contour>
+      <point x="515" y="396" type="curve"/>
+      <point x="515" y="428" type="line"/>
+      <point x="431" y="426"/>
+      <point x="423" y="426"/>
+      <point x="369" y="426" type="curve"/>
+      <point x="369" y="398" type="line"/>
+      <point x="423" y="398"/>
+      <point x="431" y="398"/>
+    </contour>
+    <component base="Y"/>
+  </outline>
+</glyph>

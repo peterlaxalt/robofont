@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="sym_halfcaron" format="2">
+  <advance width="141"/>
+  <outline>
+    <contour>
+      <point x="85" y="750" type="curve"/>
+      <point x="121" y="750" type="line"/>
+      <point x="121" y="648"/>
+      <point x="69" y="540"/>
+      <point x="32" y="503" type="curve"/>
+      <point x="20" y="511" type="line"/>
+      <point x="64" y="570"/>
+      <point x="85" y="645"/>
+    </contour>
+  </outline>
+</glyph>

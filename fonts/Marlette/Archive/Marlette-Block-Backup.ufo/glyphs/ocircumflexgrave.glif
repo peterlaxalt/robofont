@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="ocircumflexgrave" format="2">
+  <advance width="617"/>
+  <unicode hex="1ED3"/>
+  <outline>
+    <component base="ocircumflex"/>
+    <component base="sym_grave_small" xOffset="264" yOffset="1"/>
+  </outline>
+</glyph>

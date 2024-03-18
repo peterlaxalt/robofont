@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="Uhorn" format="2">
+  <advance width="744"/>
+  <unicode hex="01AF"/>
+  <outline>
+    <component base="U"/>
+    <component base="sym_horn_straight" xOffset="538" yOffset="110"/>
+  </outline>
+</glyph>

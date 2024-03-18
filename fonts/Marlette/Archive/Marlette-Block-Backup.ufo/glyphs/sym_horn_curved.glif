@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<glyph name="sym_horn_curved" format="2">
+  <advance width="283"/>
+  <guideline x="240" y="761" angle="0" identifier="XxQcs9r7Ti"/>
+  <guideline x="70.03542858721933" y="874.0559794447163" angle="90" identifier="cWsdQzgd5Y"/>
+  <guideline x="243" y="869" angle="90" identifier="N4tDwBGiNM"/>
+  <guideline x="264" y="876" angle="0" identifier="4PDqiqw72l"/>
+  <outline>
+    <contour>
+      <point x="218" y="809" type="curve"/>
+      <point x="218" y="843"/>
+      <point x="196" y="868"/>
+      <point x="149" y="868" type="curve"/>
+      <point x="111" y="868"/>
+      <point x="94" y="848"/>
+      <point x="94" y="822" type="curve"/>
+      <point x="94" y="809"/>
+      <point x="106" y="780"/>
+      <point x="148" y="780" type="curve"/>
+      <point x="171" y="780"/>
+      <point x="191" y="800"/>
+      <point x="191" y="809" type="curve"/>
+      <point x="191" y="809"/>
+      <point x="203" y="805"/>
+      <point x="203" y="805" type="curve" smooth="yes"/>
+      <point x="203" y="770"/>
+      <point x="156" y="746"/>
+      <point x="86" y="746" type="curve" smooth="yes"/>
+      <point x="30" y="746"/>
+      <point x="-21" y="761"/>
+      <point x="-102" y="761" type="curve"/>
+      <point x="-102" y="701" type="line"/>
+      <point x="86.0" y="701" type="line"/>
+      <point x="86.0" y="719" type="line"/>
+      <point x="86.0" y="719"/>
+      <point x="218" y="721"/>
+    </contour>
+  </outline>
+</glyph>
