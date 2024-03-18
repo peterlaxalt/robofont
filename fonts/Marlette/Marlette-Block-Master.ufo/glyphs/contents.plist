@@ -634,12 +634,16 @@
     <string>hira_di.glif</string>
     <key>hira:e</key>
     <string>hira_e.glif</string>
+    <key>hira:ga</key>
+    <string>hira_ga.glif</string>
     <key>hira:go</key>
     <string>hira_go.glif</string>
     <key>hira:ha</key>
     <string>hira_ha.glif</string>
     <key>hira:i</key>
     <string>hira_i.glif</string>
+    <key>hira:ka</key>
+    <string>hira_ka.glif</string>
     <key>hira:ko</key>
     <string>hira_ko.glif</string>
     <key>hira:n</key>
