@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <glyph name="hira:zi" format="2">
-  <advance width="860"/>
+  <advance width="900"/>
   <unicode hex="3058"/>
   <outline>
     <component base="hira:si"/>

@@ -636,16 +636,28 @@
     <string>hira_e.glif</string>
     <key>hira:ga</key>
     <string>hira_ga.glif</string>
+    <key>hira:ge</key>
+    <string>hira_ge.glif</string>
+    <key>hira:gi</key>
+    <string>hira_gi.glif</string>
     <key>hira:go</key>
     <string>hira_go.glif</string>
+    <key>hira:gu</key>
+    <string>hira_gu.glif</string>
     <key>hira:ha</key>
     <string>hira_ha.glif</string>
     <key>hira:i</key>
     <string>hira_i.glif</string>
     <key>hira:ka</key>
     <string>hira_ka.glif</string>
+    <key>hira:ke</key>
+    <string>hira_ke.glif</string>
+    <key>hira:ki</key>
+    <string>hira_ki.glif</string>
     <key>hira:ko</key>
     <string>hira_ko.glif</string>
+    <key>hira:ku</key>
+    <string>hira_ku.glif</string>
     <key>hira:n</key>
     <string>hira_n.glif</string>
     <key>hira:ni</key>
@@ -654,8 +666,12 @@
     <string>hira_o.glif</string>
     <key>hira:sa</key>
     <string>hira_sa.glif</string>
+    <key>hira:se</key>
+    <string>hira_se.glif</string>
     <key>hira:si</key>
     <string>hira_si.glif</string>
+    <key>hira:su</key>
+    <string>hira_su.glif</string>
     <key>hira:ti</key>
     <string>hira_ti.glif</string>
     <key>hira:u</key>
@@ -664,8 +680,12 @@
     <string>hira_voicedmarkkana.glif</string>
     <key>hira:za</key>
     <string>hira_za.glif</string>
+    <key>hira:ze</key>
+    <string>hira_ze.glif</string>
     <key>hira:zi</key>
     <string>hira_zi.glif</string>
+    <key>hira:zu</key>
+    <string>hira_zu.glif</string>
     <key>horizontalbar</key>
     <string>horizontalbar.glif</string>
     <key>hungarumlaut</key>

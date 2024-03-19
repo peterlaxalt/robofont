@@ -94,6 +94,10 @@
     <string>hira_a.glif</string>
     <key>hira:e</key>
     <string>hira_e.glif</string>
+    <key>hira:gi</key>
+    <string>hira_gi.glif</string>
+    <key>hira:i</key>
+    <string>hira_i.glif</string>
     <key>hungarumlaut</key>
     <string>hungarumlaut.glif</string>
     <key>k</key>
