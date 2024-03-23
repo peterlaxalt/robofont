@@ -1,8 +1,0 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<glyph name="bar" format="2">
-  <advance width="72"/>
-  <unicode hex="007C"/>
-  <outline>
-    <component base="hyphen" xScale="0" xyScale="-2.065457202907026" yxScale="1" yScale="0" xOffset="-367" yOffset="794"/>
-  </outline>
-</glyph>

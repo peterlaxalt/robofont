@@ -1,8 +1,0 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<glyph name="backslash" format="2">
-  <advance width="236"/>
-  <unicode hex="005C"/>
-  <outline>
-    <component base="bar" xScale="0.9983981623742918" xyScale="-0.01573838668194726" yxScale="0.19327165235533983" yScale="-1.0083942243994117" xOffset="11" yOffset="740"/>
-  </outline>
-</glyph>

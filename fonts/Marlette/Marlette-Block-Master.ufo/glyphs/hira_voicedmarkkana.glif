@@ -1,9 +1,0 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<glyph name="hira:voicedmarkkana" format="2">
-  <advance width="194"/>
-  <unicode hex="309B"/>
-  <outline>
-    <component base="quotesingle" xScale="0.6438021881148608" yScale="0.6084990560718759" yOffset="334"/>
-    <component base="quotesingle" xScale="0.6438021881148608" yScale="0.6084990560718759" xOffset="105" yOffset="334"/>
-  </outline>
-</glyph>

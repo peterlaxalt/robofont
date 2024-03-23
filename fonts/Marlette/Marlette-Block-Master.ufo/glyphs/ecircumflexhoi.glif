@@ -1,9 +1,0 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<glyph name="ecircumflexhoi" format="2">
-  <advance width="572"/>
-  <unicode hex="1EC3"/>
-  <outline>
-    <component base="ecircumflex"/>
-    <component base="sym_hoi" xOffset="229" yOffset="-3"/>
-  </outline>
-</glyph>

@@ -1,9 +1,0 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<glyph name="yhoi" format="2">
-  <advance width="594"/>
-  <unicode hex="1EF7"/>
-  <outline>
-    <component base="y"/>
-    <component base="sym_hoi" xOffset="140" yOffset="-71"/>
-  </outline>
-</glyph>

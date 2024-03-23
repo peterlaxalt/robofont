@@ -11,11 +11,13 @@ allUnis = list(uni2name.keys())
 
 # colors
 def setBackgroundColor():
-    fill(0,0,0, 1)
+    # fill(0,0,0, 1)
+    fill(255,255,255, 1)
     rect(0, 0, pageWidth, pageHeight)
 
 def setForegroundColor():
-    fill(255,255,255, 1)
+    # fill(255,255,255, 1)
+    fill(0,0,0, 1)
 
 # main variables
 boxHeight = 70
@@ -30,10 +32,11 @@ unicodeGroups = True
 unicodeFilters = ['Hiragana']
 
 # return all glyphs at end
-returnAllGlyphs = False
+returnAllGlyphs = True
 
 # define page size
-size('TabloidLandscape')
+# size('TabloidLandscape')
+size('LetterLandscape')
 
 ######################################################
 

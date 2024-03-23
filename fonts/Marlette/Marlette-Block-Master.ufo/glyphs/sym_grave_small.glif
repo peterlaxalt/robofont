@@ -1,7 +1,0 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<glyph name="sym_grave_small" format="2">
-  <advance width="258"/>
-  <outline>
-    <component base="sym_acute_small" xScale="-1" xOffset="258" yOffset="-70"/>
-  </outline>
-</glyph>

@@ -1,8 +1,0 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<glyph name="endash" format="2">
-  <advance width="588"/>
-  <unicode hex="2013"/>
-  <outline>
-    <component base="hyphen" xScale="1.328953715838212"/>
-  </outline>
-</glyph>

@@ -1,9 +1,0 @@
-<?xml version='1.0' encoding='UTF-8'?>
-<glyph name="brokenbar" format="2">
-  <advance width="72"/>
-  <unicode hex="00A6"/>
-  <outline>
-    <component base="hyphen" xScale="0" xyScale="0.9549367862525882" yxScale="-1" yScale="0" xOffset="399" yOffset="401"/>
-    <component base="hyphen" xScale="0" xyScale="0.9549367862525882" yxScale="-1" yScale="0" xOffset="399" yOffset="-57"/>
-  </outline>
-</glyph>
