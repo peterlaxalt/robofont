@@ -1,11 +1,33 @@
 from glyphNameFormatter.reader import *
 
+
+################
+# Define lookup
+
+rangeLookup = "Devanagari"
+
+################
+# Variables
+
 allUnis = list(uni2name.keys())
 counter = 0
 charArray = []
 
+################
+# Helpers
+
+def contains_substring(main_string, substring):
+    # Using the 'in' keyword
+    if substring.lower() in main_string.lower() or main_string.lower().find(substring.lower()) != -1:
+        return True
+    else:
+        return False
+
+################
+# Let it rip
+
 for v in allUnis:
-    if u2r(v) == "Hiragana" or u2r(v) == "Katakana":
+    if contains_substring(u2r(v), rangeLookup):
         counter = counter + 1 
         charArray.append(chr(v))
         
@@ -17,4 +39,7 @@ for v in allUnis:
         
         # Add to array
         
+print('############################################')
 print(charArray)
+print('############################################')
+print(counter, 'total glyphs')

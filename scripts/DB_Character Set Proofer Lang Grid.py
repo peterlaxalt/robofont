@@ -11,32 +11,36 @@ allUnis = list(uni2name.keys())
 
 # colors
 def setBackgroundColor():
-    # fill(0,0,0, 1)
-    fill(255,255,255, 1)
+    fill(0,0,0, 1)
+    # fill(255,255,255, 1)
     rect(0, 0, pageWidth, pageHeight)
 
 def setForegroundColor():
-    # fill(255,255,255, 1)
-    fill(0,0,0, 1)
+    fill(255,255,255, 1)
+    # fill(0,0,0, 1)
 
 # main variables
-boxHeight = 70
+boxHeight = 100
 boxPaddingX = 20
-boxPaddingY = 20
+boxPaddingY = 40
 margin = 30
 groupFontSize = 16
 groupFontFamily = 'Dank Mono'
 
+showReferenceFont = True
+referenceFontFamily = 'Noto Sans JP Medium'
+referenceFontSize = 30
+
 # unicode groups
 unicodeGroups = True
-unicodeFilters = ['Hiragana']
+unicodeFilters = ['Hiragana', 'Katakana']
 
 # return all glyphs at end
-returnAllGlyphs = True
+returnAllGlyphs = False
 
 # define page size
-# size('TabloidLandscape')
-size('LetterLandscape')
+size('TabloidLandscape')
+# size('LetterLandscape')
 
 ######################################################
 
@@ -101,13 +105,14 @@ if unicodeGroups and uniRangeGroups:
             # set position 
             xBox, yBox = x, y - (groupFontSize + margin)
             
-            # set colors
+            # add group name
             setForegroundColor()
             font(groupFontFamily, groupFontSize)
             text(groupName, (x, pageHeight - (margin + groupFontSize)))
             
             # loop through glyphs
             for i, glyphName in enumerate(f.glyphOrder):
+            
                 
                 if glyphName == 'space':
                     continue
@@ -119,6 +124,8 @@ if unicodeGroups and uniRangeGroups:
                 # draw glyph
                 if groupName == uniRange:
                     g = f[glyphName]
+                    print(uniValue)
+                    
                     boxWidth = g.width*s
                     # boxWidth = boxHeight
 
@@ -150,7 +157,15 @@ if unicodeGroups and uniRangeGroups:
                     stroke(None)
                     scale(s)
                     drawGlyph(g)
+                    
+                    # show reference
+                    if showReferenceFont:     
+                        font(referenceFontFamily, referenceFontSize * (s * 100))
+                        text(chr(uniValue), (0, referenceFontSize * (s * -120)))
+                        
+                   
                     restore()
+                                
 
                     # move to next glyph
                     xBox += boxWidth + boxPaddingX
