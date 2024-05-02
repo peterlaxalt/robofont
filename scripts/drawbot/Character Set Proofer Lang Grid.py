@@ -1,4 +1,14 @@
-'''Character Set Proofer'''
+'''
+Character Set Proofer
+* Peter Laxalt 2024
+
+- Show all characters from your font
+- Show reference characters for glyphs
+- Show only a range of Unicode
+- Group by Unicode range
+- Adjust sizes and colors
+- Adjust page size for print
+'''
 
 from glyphNameFormatter.reader import *
 
@@ -28,12 +38,14 @@ groupFontSize = 16
 groupFontFamily = 'Dank Mono'
 
 showReferenceFont = True
-referenceFontFamily = 'Noto Sans JP Medium'
-referenceFontSize = 30
+# referenceFontFamily = 'Noto Sans JP Medium'
+referenceFontFamily = 'Noto Serif Thai'
+referenceFontSize = 40
 
 # unicode groups
 unicodeGroups = True
-unicodeFilters = ['Hiragana', 'Katakana']
+# unicodeFilters = ['Hiragana', 'Katakana']
+unicodeFilters = ['Thai']
 
 # return all glyphs at end
 returnAllGlyphs = False

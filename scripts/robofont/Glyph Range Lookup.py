@@ -4,7 +4,7 @@ from glyphNameFormatter.reader import *
 ################
 # Define lookup
 
-rangeLookup = "Devanagari"
+rangeLookup = "Thai"
 
 ################
 # Variables
