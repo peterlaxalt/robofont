@@ -37,15 +37,15 @@ margin = 30
 groupFontSize = 16
 groupFontFamily = 'Dank Mono'
 
-showReferenceFont = True
-# referenceFontFamily = 'Noto Sans JP Medium'
-referenceFontFamily = 'Noto Serif Thai'
+showReferenceFont = False
+referenceFontFamily = 'Noto Sans JP Medium'
+# referenceFontFamily = 'Noto Serif Thai'
 referenceFontSize = 40
 
 # unicode groups
 unicodeGroups = True
-# unicodeFilters = ['Hiragana', 'Katakana']
-unicodeFilters = ['Thai']
+unicodeFilters = ['Hiragana', 'Katakana']
+# unicodeFilters = ['Thai']
 
 # return all glyphs at end
 returnAllGlyphs = False
