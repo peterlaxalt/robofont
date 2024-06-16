@@ -43,8 +43,8 @@ class GlyphBulkSpacingMenu(Subscriber):
         self.w.input_right = vanilla.EditText((100, 40, 50, 20), "20")
         
         # Add Apply button
-        self.w.apply_button = vanilla.Button((10, 70, 140, 20), "Apply", callback=self.update_glyphs)
-        self.w.cancel_button = vanilla.Button((150, 70, 140, 20), "Cancel", callback=self.cancel)
+        self.w.apply_button = vanilla.Button((150, 70, 140, 20), "✅ Apply", callback=self.update_glyphs)
+        self.w.cancel_button = vanilla.Button((10, 70, 140, 20), "⛔️ Cancel", callback=self.cancel)
         
         # Open the window
         self.w.open()
