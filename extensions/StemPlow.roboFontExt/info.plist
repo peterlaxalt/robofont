@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>addToMenu</key>
+	<array>
+		<dict>
+			<key>path</key>
+			<string>stemPlow/StemPlowSettings.py</string>
+			<key>preferredName</key>
+			<string>Settings…</string>
+			<key>shortKey</key>
+			<string></string>
+		</dict>
+	</array>
+	<key>developer</key>
+	<string>Rafał Buchner</string>
+	<key>developerURL</key>
+	<string>http://github.com/rafalbuchner</string>
+	<key>html</key>
+	<true/>
+	<key>launchAtStartUp</key>
+	<true/>
+	<key>mainScript</key>
+	<string>StemPlowTool.py</string>
+	<key>name</key>
+	<string>Stem Plow</string>
+	<key>requiresVersionMajor</key>
+	<string>4</string>
+	<key>requiresVersionMinor</key>
+	<string>2</string>
+	<key>timeStamp</key>
+	<real>1691535340.557169</real>
+	<key>version</key>
+	<string>1.221</string>
+</dict>
+</plist>

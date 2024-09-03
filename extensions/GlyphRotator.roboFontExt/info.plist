@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>addToMenu</key>
+	<array>
+		<dict>
+			<key>path</key>
+			<string>GlyphPreviewRotate.py</string>
+			<key>preferredName</key>
+			<string>Rotated Glyph Preview</string>
+			<key>shortKey</key>
+			<string></string>
+		</dict>
+	</array>
+	<key>developer</key>
+	<string>Jens Kutilek</string>
+	<key>developerURL</key>
+	<string>http://www.kutilek.de/</string>
+	<key>html</key>
+	<false/>
+	<key>launchAtStartUp</key>
+	<integer>0</integer>
+	<key>mainScript</key>
+	<string>GlyphPreviewRotate.py</string>
+	<key>name</key>
+	<string>Rotated Glyph Preview</string>
+	<key>requiresVersionMajor</key>
+	<string>1</string>
+	<key>requiresVersionMinor</key>
+	<string>5</string>
+	<key>timeStamp</key>
+	<real>1552143424.0</real>
+	<key>version</key>
+	<string>1.6</string>
+	<key>com.robofontmechanic.Mechanic</key>
+	<dict>
+		<key>repository</key>
+		<string>jenskutilek/RoboFont</string>
+		<key>summary</key>
+		<string>A glyph preview window that can be freely rotated.</string>
+	</dict>
+</dict>
+</plist>

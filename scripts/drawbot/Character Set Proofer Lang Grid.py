@@ -30,18 +30,20 @@ def setForegroundColor():
     # fill(0,0,0, 1)
 
 # main variables
-boxHeight = 100
+boxHeight = 110
+fixedWidth = True
+
 boxPaddingX = 20
 boxPaddingY = 40
 margin = 30
+
 groupFontSize = 16
 groupFontFamily = 'Dank Mono'
 
-showReferenceFont = False
-referenceFontFamily = 'Noto Sans JP Medium'
+showReferenceFont = True
+referenceFontFamily = 'Noto Sans JP Light'
 # referenceFontFamily = 'Noto Serif Thai'
-referenceFontSize = 40
-
+referenceFontSize = 20
 # unicode groups
 unicodeGroups = True
 unicodeFilters = ['Hiragana', 'Katakana']
@@ -49,7 +51,6 @@ unicodeFilters = ['Hiragana', 'Katakana']
 
 # return all glyphs at end
 returnAllGlyphs = False
-
 # define page size
 size('TabloidLandscape')
 # size('LetterLandscape')
@@ -120,7 +121,7 @@ if unicodeGroups and uniRangeGroups:
             # add group name
             setForegroundColor()
             font(groupFontFamily, groupFontSize)
-            text(groupName, (x, pageHeight - (margin + groupFontSize)))
+            text(groupName.upper(), (x, pageHeight - (margin + groupFontSize)))
             
             # loop through glyphs
             for i, glyphName in enumerate(f.glyphOrder):
@@ -139,7 +140,9 @@ if unicodeGroups and uniRangeGroups:
                     print(uniValue)
                     
                     boxWidth = g.width*s
-                    # boxWidth = boxHeight
+                    
+                    if (fixedWidth):
+                        boxWidth = boxHeight
 
                     # jump to next line
                     if xBox + boxWidth >= pageWidth - margin:
@@ -152,11 +155,11 @@ if unicodeGroups and uniRangeGroups:
                             setBackgroundColor()
                             setForegroundColor()
                             font(groupFontFamily, groupFontSize)
-                            text(groupName + ' (Continued)', (x, pageHeight - (margin + groupFontSize)))
+                            text(groupName.upper() + ' (CONTINUED)', (x, pageHeight - (margin + groupFontSize)))
                             xBox, yBox = x, y - (groupFontSize + margin)
 
                     # draw glyph cell
-                    # stroke(0, 0.5, 1)
+                    #stroke(0, 0.5, 1)
                     fill(None)
                     rect(xBox, yBox, boxWidth, boxHeight)
 
@@ -173,7 +176,7 @@ if unicodeGroups and uniRangeGroups:
                     # show reference
                     if showReferenceFont:     
                         font(referenceFontFamily, referenceFontSize * (s * 100))
-                        text(chr(uniValue), (0, referenceFontSize * (s * -120)))
+                        text(chr(uniValue), (0, referenceFontSize * (s * -140)))
                         
                    
                     restore()
@@ -198,7 +201,11 @@ if returnAllGlyphs:
             continue
 
         g = f[glyphName]
+        
         boxWidth = g.width*s
+        
+        if (fixedWidth):
+            boxWidth = boxHeight
 
         # jump to next line
         if xBox + boxWidth >= pageWidth - margin:

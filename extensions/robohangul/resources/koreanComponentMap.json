@@ -1,0 +1,30 @@
+{
+  "consonants": {
+      "ㄱ": "korean_giyeok",
+      "ㄴ": "korean_nieun",
+      "ㄷ": "korean_digeut",
+      "ㄹ": "korean_rieul",
+      "ㅁ": "korean_mieum",
+      "ㅂ": "korean_bieup",
+      "ㅅ": "korean_siot",
+      "ㅇ": "korean_ieung",
+      "ㅈ": "korean_jieut",
+      "ㅊ": "korean_chieut",
+      "ㅋ": "korean_kieuk",
+      "ㅌ": "korean_tieut",
+      "ㅍ": "korean_pieup",
+      "ㅎ": "korean_hieut"
+  },
+  "vowels": {
+      "ㅏ": "korean_a",
+      "ㅑ": "korean_ya",
+      "ㅓ": "korean_eo",
+      "ㅕ": "korean_yeo",
+      "ㅗ": "korean_o",
+      "ㅛ": "korean_yo",
+      "ㅜ": "korean_u",
+      "ㅠ": "korean_yu",
+      "ㅡ": "korean_eu",
+      "ㅣ": "korean_i"
+  }
+}

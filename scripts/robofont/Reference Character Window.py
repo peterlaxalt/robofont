@@ -1,5 +1,6 @@
 import vanilla
 from AppKit import NSFont, NSFontManager, NSFontAttributeName, NSParagraphStyleAttributeName, NSMutableParagraphStyle, NSAttributedString
+from mojo.UI import CurrentGlyphWindow
 
 class ReferenceCharacterWindow:
     def __init__(self):
@@ -15,19 +16,22 @@ class ReferenceCharacterWindow:
         if font:
             text_size = self.calculateTextSize(self.character, font)
             initial_width = max(int(text_size.width) + 20, 200)  # Minimum width 200 pixels
-            initial_height = int(text_size.height) + 50
+            initial_height = int(text_size.height) + 120  # Additional space for the button
         else:
             initial_width = 200
-            initial_height = 150
+            initial_height = 220  # Additional space for the button
         
         self.w = vanilla.Window((initial_width, initial_height), "Reference Character Viewer")
         
         # Centered and line-height adjusted textBox
-        self.w.textBox = vanilla.TextBox((10, 40, -10, -10), "", alignment='center')
+        self.w.textBox = vanilla.TextBox((10, 40, -10, -40), "", alignment='center')
         
         # Inputs
         self.w.characterInput = vanilla.EditText((10, 10, -10, 24), self.character, callback=self.updateCharacter)
         self.w.fontInput = vanilla.PopUpButton((10, 40, -10, 24), self.fonts, callback=self.updateFont)
+        
+        # Button to use current glyph
+        self.w.useGlyphButton = vanilla.Button((10, -30, -10, 24), "Use Current Glyph", callback=self.useCurrentGlyph)
         
         # Select NotoSansJP-Bold if it exists in self.fonts
         if "NotoSansJP-Bold" in self.fonts:
@@ -63,11 +67,21 @@ class ReferenceCharacterWindow:
             # Resize the window to fit the current character size
             text_size = self.calculateTextSize(self.character, font)
             new_width = max(int(text_size.width) + 40, 200)  # Minimum width 200 pixels
-            new_height = int(text_size.height) + 60
+            new_height = int(text_size.height) + 90  # Additional space for the button
             self.w.setPosSize((self.w.getPosSize()[0], self.w.getPosSize()[1], new_width, new_height))
 
         except Exception as e:
             self.w.textBox.set(f"Error: {e}")
+    
+    def useCurrentGlyph(self, sender):
+        glyph_window = CurrentGlyphWindow()
+        if glyph_window:
+            glyph = glyph_window.getGlyph()
+            if glyph:
+                originalChar = self.character
+                self.character = originalChar + chr(glyph.unicode)
+                self.w.characterInput.set(self.character)
+                self.updateDisplay()
     
     def centeredParagraphStyle(self):
         paragraphStyle = NSMutableParagraphStyle.alloc().init()

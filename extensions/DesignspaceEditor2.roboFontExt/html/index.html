@@ -1,0 +1,1602 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="styles.css">
+<title>DesignspaceEditor2 for RoboFont</title>
+</head>
+<body>
+
+
+<p><img class="bigicon" src="toolbar_500_500_icon_location_labels.png" alt="DSE2 location labels icon"></p>
+
+
+<h1 id="toc_0">
+    <a href="https://github.com/LettError/designSpaceRoboFontExtension">DesignspaceEditor 2</a>
+</h1>
+
+
+<p>Create and edit designspaces with RoboFont 4.5+, with support for scripting and notifications.
+    <br>By TypeMyType and LettError.
+</p>
+
+<h3 id="toc">Contents</h3>
+<ul>
+    <li><a href="#designspace-editor">Getting Started</a></li>
+    <li><a href="#toolbar">DSE2 Toolbar</a></li>
+    <li><a href="#axes">Axes Tab</a></li>
+    <li><a href="#sources">Sources Tab</a></li>
+    <li><a href="#note-on-support-layers">Notes on support layer, sparse master, brace layer</a></li>
+    <li><a href="#instances">Instances Tab</a></li>
+    <li><a href="#rules">Rules Tab</a></li>
+    <li><a href="#location-labels">Location Labels Tab</a></li>
+    <li><a href="#variable-fonts">Variable Fonts Tab</a></li>
+    <li><a href="#problems">Problems Tab</a></li>
+    <li><a href="#notes">Notes Tab</a></li>
+    <li><a href="#location-preview-window">Preview Window</a></li>
+    <li><a href="#designspace-scripting">Scripting with the current designspace</a></li>
+    <li><a href="#ufooperator-methods">Useful methods of the UFOOperator</a></li>
+    <li><a href="#designspace-notifications">Notifications</a></li>
+    <li><a href="#designspace-notification-subscriber">Receiving and responding to notifications</a></li>
+    <li><a href="#designspace-notification-overview">Overview of DSE2 Notifications</a></li>
+    <li><a href="#acknowledgements">Acknowledgements</a></li>
+</ul>
+
+<a href="https://letterror.github.io/designSpaceRoboFontExtension/">This page is also available on GitHub.</a>
+
+<h3>Goals</h3>
+
+<ul>
+<li>Create, open, edit and save existing <a
+        href="https://fonttools.readthedocs.io/en/latest/designspaceLib/index.html"
+        >
+        designspaces format 5</a> files.</li>
+<li>You can create a new designspace and populate it with axes, sources and instances.</li>
+<li>You can edit all sorts of axis labels, location labels and add localisations.</li>
+<li>You can quickly open the UFOs listed as sources.</li>
+<li>You can generate UFOs for defined instances.</li>
+<li>You can preview and <a href="#instances">add instances</a>.</li>
+<li>You can check designspaces and find structural issues and compatibility problems.</li>
+<li>DSE2 collects and sends designspace-related notifications about changes to the designspace, and also changes in the source font data. Other tools in RF can request interpolated glyphs, kerning and font info at specific locations, using MutatorMath as well as Varlib interpolation models. </li>
+<li>You can experiment with <b>extrapolation</b> and <b>anisotropic interpolations</b> and see previews for such exotic things. <b>Even if these are not supported as Variable fonts, you can export them as UFO.</b></li>
+<li>You can write scripts that use the current designspace.</li>
+</ul>
+
+
+<h2 id="toolbar">DSE2 Toolbar <a href="#toc">↑</a></h2>
+
+<table>
+    <tr>
+        <td class="smallicon">
+            <a href="#axes"><img src="toolbar_500_500_icon_axes.png"></a>
+        </td>
+        <td class="smallicon">
+            <a href="#sources"><img src="toolbar_500_500_icon_sources.png"></a>
+        </td>
+        <td class="smallicon">
+            <a href="#instances"><img src="toolbar_500_500_icon_instances.png"></a>
+        </td>
+        <td class="smallicon">
+            <a href="#rules"><img src="toolbar_500_500_icon_rules.png"></a>
+        </td>
+        <td class="smallicon">
+            <a href="#location-labels"><img src="toolbar_500_500_icon_location_labels.png"></a>
+        </td>
+        <td class="smallicon">
+            <a href="#variable-fonts"><img src="toolbar_500_500_icon_variable_fonts.png"></a>
+        </td>
+        <td class="smallicon">
+            <a href="#problems"><img src="toolbar_500_500_icon_problems.png"></a>
+        </td>
+    </tr>
+
+    <tr>
+        <td class="smallicon">
+            <a href="#axes">Axes Tab</a>
+        </td>
+        <td class="smallicon">
+            <a href="#sources">Sources Tab</a>
+        </td>
+        <td class="smallicon">
+            <a href="#instances">Instances Tab</a>
+        </td>
+        <td class="smallicon">
+            <a href="#rules">Rules Editor</a>
+        </td>
+        <td class="smallicon">
+            <a href="#location-labels">Location Labels Editor</a>
+        </td>
+        <td class="smallicon">
+            <a href="#variable-fonts">Variable Fonts Editor</a>
+        </td>
+        <td class="smallicon">
+            <a href="#problems">Problems Tab</a>
+        </td>
+    </tr>
+
+    <tr>
+        <td class="smallicon">
+            <img src="chart.bar.doc.horizontal2x.png">
+        </td>
+        <td class="smallicon">
+            <img src="square.and.arrow.down2x.png">
+        </td>
+        <td class="smallicon">
+            <img src="questionmark.circle2x.png">
+        </td>
+    </tr>
+
+    <tr>
+        <td class="smallicon">
+            <a href="#location-preview-window">Open Preview Window</a>
+        </td>
+        <td class="smallicon">
+            Save the Designspace
+        </td>
+        <td class="smallicon">
+            Open Documentation
+        </td>
+    </tr>
+
+</table>
+
+
+
+
+
+<h2 id="designspace-editor">Getting Started<a href="#toc">↑</a></h2>
+
+This is
+<ol>
+<li>Look for DSE2 in the RoboFont File menu: <b>New Designspace, Open Designspace</b> or <b>Open Recent Designspace</b></li>
+<li>If you're starting from scratch: add the first axis in the <a href="#axes">Axes Tab</a>.
+    <ul>
+        <li>
+            There are buttons to quickly make a new <b>Weight, Width</b> or <b>Optical</b> axes with reasonable default values.</li>
+        <li>
+            Or click the <b>+</b> button to create a new axis.</li>
+        <li>
+            Give it a useful name (no spaces), and make sure it has the appropriate 4 letter axis tag. You know, <code>wght</code>, <code>wdth</code>, <code>slnt</code>, <code>ital</code> and <code>opsz</code>.</li>
+        <li>
+            Or if you're inventing a new axis, make the tag in all-caps like <code>TIME</code> or <code>GRAD</code>. Make sure the minimum, default and maximum values make sense.</li>
+    </ul>
+</li>
+<li>Go to the <a href="#sources">Sources Tab</a> and at least two source UFOs
+    <ul>
+        <li>
+            with the file dialog
+        </li>
+        <li>
+            or use the <b>+</b> button to add the UFOs that are open in RF
+        </li>
+        <li>
+            or drag and drop into the DSE <a href="#sources">Sources Tab</a>
+        </li>
+    </ul>
+    Then edit the axis values for each new source. Make sure there is at least 1 source on the default value of all axes. Make sure there aren't multiple sources on one location.
+</li>
+<li>Save the designspace in <b>the same folder as your sources, or one level up.</b> The designspace format stores a <b>relative path to the sources and instances,</b> so keep them close together.</li>
+<li><a href="#instances">Add instances</a>, <a href="#rules">rules</a>, <a href="#axis-label-editor">axis labels</a>, <a href="#location-labels">location labels</a> and whatever else you need to do.</li>
+<li>Check the Problems Tab to see if there are no immediate issues with your setup.</li>
+<li>Preview selected instances in text, and create new instances</li>
+<li>Save early and often.</li>
+</ol>
+
+Note that DSE2 does not maintain formatting or comments in designspace it edits. We know some of you are very particular about the xml.
+
+
+
+
+
+
+
+
+
+
+
+<p><img class="bigicon" src="toolbar_500_500_icon_axes.png" alt="DSE2 axes icon"></p>
+
+<h2 id="axes">Axes Tab <a href="#toc">↑</a></h3>
+
+<img alt="screenshot of DSE2 axes tab" src="screenshot_mutatorsans_axestab.png">
+
+
+<h3>Axes Buttons</h3>
+
+Quick buttons for easy axes. Obviously you can edit these values here.
+<ul>
+<li><strong>Add Weight Axis</strong>: this adds a new continuous <code>wght</code> axis from 400 to 700.</li>
+<li><strong>Add Width Axis</strong>: this adds a new continuous <code>wdth</code> axis from 100 to 50</li>
+<li><strong>Add Optical Axis</strong>: this adds a new <code>opsz</code> axis, from 10 to 16.</li>
+<li><strong>+</strong> add a new axis: add a new axis with any name.</li>
+<li><strong>—</strong> delete the selected axis. <strong>Note: no undo!</strong></li>
+</ul>
+<h3>Axes Columns</h3>
+
+<table>
+    <tr>
+        <td><img src="toolbar_25_25_info.circle.fill.svg">
+        </td>
+        <td>
+            Double click the icon to get the popover editor for <strong>axis labels</strong> and <strong>axis maps</strong>. The editor represents the labels and maps in a simple syntax for editing. When the panel is closed, the text is converted to designspace objects.
+        </td>
+    </tr>
+    <tr>
+        <td>Name
+        </td>
+        <td>Nice human readable name for this axis. No spaces. This name will be for the default English language localisation.
+        </td>
+    </tr>
+    <tr>
+        <td>Tag
+        </td>
+        <td>A 4-letter tag, <em>the technical identifier</em> for this axis.
+            <ul>
+                <li>
+                    All lowercase for a standard, pre-defined axis, such as <code>wght</code>, <code>wdth</code>, <code>opsz</code>, <code>ital</code> and <code>slnt</code>.
+                </li>
+                <li>
+                    Use all-uppercase for your own axes. <code>FORK</code>, <code>MONO</code>.
+                </li>
+        </td>
+    </tr>
+    <tr>
+        <td>Minimum
+        </td>
+        <td>The minimum value of this axis, required for continuous axes.
+        </td>
+    </tr>
+    <tr>
+        <td>Maximum
+        </td>
+        <td>The maximum value of this axis, required for continuous axes.
+        </td>
+    </tr>
+    <tr>
+        <td>Default
+        </td>
+        <td>The default value of this axis, required. For a continuous axis the default needs to be between minimum and maximum or equal to one of them. For a discrete axis the default must be one of the axis values.
+        </td>
+    </tr>
+    <tr>
+        <td>Discrete Values
+        </td>
+        <td>To define discrete axis values enter space separated numbers. For instance <code>30 60 100</code>. One of these values must match the default. Leave this field empty if this is to be a continuous, interpolating axis.
+        </td>
+    </tr>
+    <tr>
+        <td>Hidden</td>
+        <td>Corresponds with the OpenType variable font specification flag <strong>HIDDEN_AXiS</strong>. to "provided to indicate a recommendation by the font developer that the axis not be exposed directly to end users in application user interfaces."</td>
+    </tr>
+    <tr>
+        <td>📈
+        </td>
+        <td>Indicates this axis has a map. Click the <img src="toolbar_25_25_info.circle.fill.svg"> for the Axis Map editor.
+        </td>
+    </tr>
+    <tr>
+        <td>🏷️
+        </td>
+        <td>Indicates this axis has labels. Click the <img src="toolbar_25_25_info.circle.fill.svg"> for the Axis Label editor.
+        </td>
+    </tr>
+</table>
+
+
+
+<h3>Axis Map editor syntax</h3>
+
+<div>
+    <pre><code class="language-none"># user space value
+#   (numbers exposed to the user in a UI)
+# maps to
+#   designspace value
+#   (the internal values used to position sources and instances in the designspace)
+50 &gt; 10
+100 &gt; 20
+125 &gt; 66
+150 &gt; 990
+
+# Please note: in these examples, lines starting with # are comments.
+# The comments are not saved in the designspace.</code></pre>
+</div>
+
+<ul>
+    <li>
+    <a
+        href="https://fonttools.readthedocs.io/en/latest/designspaceLib/scripting.html#option-add-a-map"
+        alt="link to documentation on the avar table">
+            FontTools.designspaceLib documentation on how these values are stored in the designspace.
+    </a>
+    </li>
+    <li>
+    <a
+        href="https://learn.microsoft.com/en-gb/typography/opentype/spec/avar"
+        alt="link to documentation on the avar table">
+            OpenType documentation on how these values are used in a variable font.
+    </a>
+    </li>
+</ul>
+
+<h3 id="axis-label-editor">Axis Label editor syntax</h3>
+
+<div><pre><code class="language-none"># Axis Labels syntax
+
+# if the line starts with a ? &lt;language tag&gt; &lt;localised string&gt;
+? fr &#39;Chasse&#39;
+
+# &lt;label name&gt; &lt;value&gt;
+&#39;Condensed&#39; 50
+
+# optionally add (elidable) or (olderSibling)
+&#39;Normal&#39; 100 (elidable) (olderSibling)
+
+# optionally add [linkeduservalue]
+# for instance: upright style links to italic, on discrete italic axis:
+&#39;Upright&#39; 0 (elidable) [1]
+&#39;Italic&#39; 1 [0]
+
+# set a range for a label name
+# &lt;label name&gt; &lt;min value&gt; &lt;default value&gt; &lt;max value&gt;
+&#39;Extra Wide&#39; 150 225 300
+&#39;Extra Light&#39; 200 200 250
+
+# add localisations for this &#39;Extra Light&#39; label
+? de &#39;Extraleicht&#39;
+? fr &#39;Extra léger&#39;
+
+# Please note: in these examples, lines starting with # are comments.
+# The comments are not saved in the designspace.
+</code></pre>
+</div>
+
+<ul>
+    <li>
+    <a
+        href="https://en.wikipedia.org/wiki/IETF_language_tag"
+        alt="link to IETF language tags">
+            IETF language tags.
+    </a>
+    </li>
+</ul>
+
+
+
+<p><img class="bigicon" src="toolbar_500_500_icon_sources.png" alt="DSE2 sources icon"></p>
+
+<h2 id="sources">Sources Tab <a href="#toc">↑</a></h3>
+
+<img alt="screenshot of DSE2 sources tab" src="screenshot_mutatorsans_sourcestab.jpg">
+
+
+<h3>Sources Tab Buttons</h3>
+
+<ul>
+<li><strong>Open UFO</strong> open a file dialog to pick a new UFO. It will be added to the default location. Edit the location!</li>
+<li><strong>Add Open UFO&#39;s</strong> adds all UFOs that are open in RoboFont at the moment as new sources. Edit the location!</li>
+<li><strong>Replace UFO</strong> Select one of the sources and pick a new ufo to replace it.</li>
+</ul>
+
+<h3>Sources Menus</h3>
+
+<p>Double click in the <img src="toolbar_25_25_info.circle.fill.svg"> icon opens a popover editor for <strong>Localised Family Name</strong> and <strong>Muted Glyphs</strong>.</p>
+
+<p>
+    Control click on a source for a contextual menu:
+    <ul>
+        <li>
+            <b>Open Source UFO</b>: opens the UFO, if it is not already open in RF.
+        </li>
+        <li>
+            <b>Reveal Source in Finder</b>
+        </li>
+        <li>
+            <b>Move to Default Location</b>: this moves the source to the default location of the continuous axes. Values will be in design coordinates.
+        </li>
+        <li>
+            <b>Set preview to Location</b>: If you have a Preview window open, it will show this location.
+        </li>
+        <li>
+            <b>Force Refresh of All Sources</b>: bug clunky debugging reset.
+        </li>
+    </ul>
+</p>
+
+
+<h3>Sources Tab Columns</h3>
+
+<table>
+    <tr>
+        <td><img src="toolbar_25_25_info.circle.fill.svg"></td>
+        <td>button for the popover editor</td>
+    </tr>
+    <tr>
+        <td>💾</td>
+        <td>shows a checkmark if the UFO is where we expect it to be</td>
+    </tr>
+    <tr>
+        <td>📍</td>
+        <td>Indicates this source is the default.</td>
+    </tr>
+    <tr>
+        <td><strong>UFO</strong></td>
+        <td>the UFO filename and path relative to the designspace document</td>
+    </tr>
+    <tr>
+        <td><strong>Family Name</strong></td>
+        <td>family name from the source UFO font info. Some applications look for these names so they do not have to open the UFOs. <em>Optional</em></td>
+    </tr>
+    <tr>
+        <td><strong>Style Name</strong></td>
+        <td>style name from the source UFO font info. Some applications look for these names so they do not have to open the UFOs. <em>Optional</em></td>
+    </tr>
+    <tr>
+        <td><strong>Layer Name</strong></td>
+        <td>name of the layer to be used as a source. Leave blank for default, &quot;foreground&quot;. <em>Optional</em> See <a href="#note-on-support-layers">Note on Support Layers.</a></td>
+    </tr>
+    <tr>
+        <td>🌐</td>
+        <td>indicates if there are localised names for this source. Click the <img src="toolbar_25_25_info.circle.fill.svg"> for the <b>Localised Family Name editor </b>.</td>
+    </tr>
+    <tr>
+        <td>🔕</td>
+        <td>indicates if there are muted glyphs in this source. Click the <img src="toolbar_25_25_info.circle.fill.svg"> for the <b>Muted Glyph editor</b>.</td>
+    </tr>
+    <tr>
+        <td>column for each axis</td>
+        <td>
+            Axis values for sources are <strong>in designspace coordinates.</strong>
+            <br>
+        If you have discrete axes, make sure this value matches one of the values of the axis. Make sure it is between axis minimum and axis maximum. No anisotropy.</td>
+    </tr>
+</table>
+
+<h3>Localised Family Name editor syntax</h3>
+
+<div><pre><code class="language-none"># localised name starts with a ? &lt;language tag&gt; &lt;localised string&gt;
+? fr &#39;Montserrat&#39;
+? ja &#39;モンセラート&#39;</code></pre>
+</div>
+
+<h3>Muted Glyph editor syntax</h3>
+
+<div><pre><code class="language-none"># a space separated list of glyph names
+a b c d</code></pre>
+</div>
+
+
+<h3 id="note-on-support-layers">Notes on the Layer Name column and support layers</h3>
+
+In the DSE Sources Tab, the <b>Layer Name</b> column can point to an optional layer name from the source UFO. If this field is empty, DSE2 will use the foreground layer. It can be useful, in some interpolations, to have an additional source for a glyph in a specific place. Perhaps the diagonals are getting a bit thin. Maybe a counter needs to be opened up a bit.
+
+The idea is that you can add a source only for that specific glyph at a very specific point in the designspace. Check out <a href="https://github.com/LettError/mutatorSans">Mutator Sans</a> for some examples of a Support Layer.
+
+<ul>
+    <li>Skateboard calls this construction a <b>Support Layer</b></li>
+    <li>FontTools / FontMake calls this construction a <b>Sparse Master</b></li>
+    <li>Glyphs calls this construction a <b>Brace Layer</b></li>
+</ul>
+
+The idea is the same, the names differ and the expectations and implementation also differ. MutatorMath designspaces always had this flexibility. Skateboard explored ways to make it easier to add such layers. And FontMake has implemented some support. But it is important to understand the limitations of this construction.
+
+<ul>
+    <li>You can put glyphs in their own UFO, or in a layer in one of the other sources.</li>
+    <li>In general, <b>supports aren't expected to have kerning or features.</b> If the changes in the support shape are such that it also needs an adjustment in kerning, you probably have to make this a full source.</li>
+    <li>The layer name field is just a string, make sure you copy the layer name correctly.</li>
+    <li>Each support layer you add fractures the designspace a little bit. The new source changes the reach of the existing sources. Meaning: effects of existing sources may become more limited and cause previous work to become invisible.</li>
+    <li>So if you want to fix kinking issues (for example) you're probably in a part of the designspace that is the combination of two or more axes. In MutatorMath nomenclature the location is "non-aligned off-axis". And then you add a fix for another issue for a different glyph at a different location. Each new off-axis fix will have an influence on the visibility of the preceeding one and it can become messy</li>
+</ul>
+
+<h3>Support layer recommendations</h3>
+<ul>
+    <li><b>Adding support layers requires caution!</b></li>
+    <li><b>Try to solve the issue in the existing on-axis and aligned sources before adding support layers.</b></li>
+    <li><b>Try to avoid multiple support layers at different locations.</b></li>
+    <li><b>If you must, try to combine fixes at a single support layer at a single location.</b></li>
+    <li><b>Try to reduce the number of support layers.</b></li>
+</ul>
+
+
+<h3>How are support layers interpreted?</h3>
+
+<ul>
+    <li>This <a href="https://github.com/googlefonts/fontmake/issues/607">discussion on GitHub</a> gives an impression of the issues you can run into with support layers.
+    </li>
+
+    <li>
+        When making previews or instance UFOs with <b>MutatorMath,</b> the interpolations are setup with the available sources for each glyph. And these can be different per glyph. MutatorMath will interpolate or extrapolate if sources are missing. Problem is: none of the other tools work like this.
+    </li>
+    <li>
+        The <b>Varlib</b> interpolation model is not as forgiving and may complain that glyphs are empty.
+    </li>
+    <li>
+        Building variable fonts with support layers: some tools like Batch, will use MutatorMath to calculate all the missing data for the support layer and essentially make it complete before continuing. This can have consequences for file size (for instance)</li>
+    <li><b>FontGoggles</b> shows support layers without problems</li>
+    <li><b>DSE2's own Preview window</b> shows support layers, in context, inbetween other lines!</li>
+</ul>
+
+<img alt="screenshot of DSE2 showing a sparse master in the Mutator Sans demo font." src="sparse_master.png">
+<p class="caption">DSE2 Preview window showing an absurdly wide S from a support layer in MutatorSans.</p>
+
+
+<p><img class="bigicon" src="toolbar_500_500_icon_instances.png" alt="DSE2 instances icon"></p>
+
+<h2 id="instances">Instances Tab <a href="#toc">↑</a></h3>
+
+<img alt="screenshot of DSE2 tab for instances" src="screenshot_mutatorsans_instancestab.png">
+
+<p>This tab shows the instances defined for this designspace. These items can become different things depending on the context. For instance, each instance can be compiled to a separate UFO file. But they can also be interpreted as named locations in a variable font.</p>
+
+<h3>Instances Tab Buttons</h3>
+
+<ul>
+    <li><strong>+</strong> add a new instance</li>
+    <li><strong>—</strong> delete the selected instance. <strong>Note: no undo!</strong>
+    </li>
+    <li><strong>Duplicate:</strong> duplicates the selected instances</li>
+    <li><strong>Add Source as Instances:</strong> makes new instances at the designspace locations of the sources.</li>
+    <li><strong>Generate Instance:</strong> this brings up a dialog with options for generating UFOs. Here you can choose between the MutatorMath and Varlib, and whether to round the geometry to integers.</li>
+    <li>Choose the <b>MutatorMath</b> model to generate instances if you want to calculate instances at anisotropic locations, or if you want to extrapolate over axis extremes. MutatorMath is a bit more forgiving when it comes to the number of off-curves and missing sources.</li>
+    <li>Choose <strong>VarLib</strong> to use the fontTools VarLib model to generate instances. This stays close to how variable fonts will show the instances. Varlib is more picky and expects all data to be present and correct.</li>
+    <li>Why are there even two models? MutatorMath was written long before Variable fonts and it is geared toward exploration and discovery, to be used during the design phase. Varlib represents how Variable fonts work, optimised for speed and production.</li>
+</ul>
+
+<h3>Instances Tab Menus</h3>
+<p>
+    Control click on an instance for a contextual menu:
+    <ul>
+        <li>
+            <b>Open Instance UFO</b>: opens the UFO, if it exists.
+        </li>
+        <li>
+            <b>Reveal Instance in Finder</b>: show the UFO, if it exists.
+        </li>
+        <li>
+            <b>Update UFO Filename</b>: make a new filename for this UFO instance, based on the family and stylename according this pattern: <code>instances/[familyName]-[styleName].ufo</code>
+        </li>
+        <li>
+            <b>Update PostScript Fontname</b>: make a new PostScript fontname for this UFO instance, based on the family and stylename according this pattern: <code>[familyName]-[styleName]</code>. Note that some tools respond differently when the PostScript fontname is not defined, so if you want to be sure, define it here.
+        </li>
+        <li>
+            <b>Convert to User Location</b>: convert this design coordinates to user coordinates, according to axis mapping.
+        </li>
+        <li>
+            <b>Convert to Design Location</b>: convert this user coordinates to design coordinates, according to axis mapping.
+        </li>
+        <li>
+            <b>Set Preview to Selection</b>: If you have a Preview window open, it will show this location.
+        </li>
+        <li>
+            <b>New instance inbetween</b>: with two instances selected in the same discrete location, this creates a new instance between the two.
+        </li>
+    </ul>
+</p>
+
+<h3>Instances Columns</h3>
+
+<table>
+    <tr>
+        <td><img src="toolbar_25_25_info.circle.fill.svg"></td>
+        <td>button for the popover editor for localised family and style names.</td>
+    </tr>
+    <tr>
+        <td>UFO
+        </td>
+        <td>path and filename of destination UFO (if that is where you want to go obviously)
+        </td>
+    </tr>
+    <tr>
+        <td><strong>Family Name</strong>
+        </td>
+        <td>Family name for the UFO
+        </td>
+    </tr>
+    <tr>
+        <td><strong>Style Name</strong>
+        </td>
+        <td>Style name for the UFO and variable font.
+        </td>
+    </tr>
+    <tr>
+        <td><strong>📍</strong>
+        </td>
+        <td>The icons in this column indicate if the location values are specified as 👤userspace (a person icon, because user), or ✏️designspace (a pencil icon because design). See Note 1.
+        </td>
+    </tr>
+    <tr>
+        <td>column for each axis</td>
+        <td>Axis values can be in <strong>userspace</strong> or <strong>design coordinates</strong>. Anisotropic values are separated by a space. See <a href="#note2-about-anisotropic-instances">Note 2</a></td>
+    </tr>
+</table>
+
+
+
+<h3 id="note1-about-userspace-designspace-coordinates">Note 1: About userspace and designspace locations</h3>
+
+<ul>
+    <li>
+        Instances can have axis values in <b>userspace</b> coordinates.
+    </li>
+    <li>
+        Control-click on an instance to get the pop up menu with some conversion options.
+    </li>
+    <li>
+        The conversion between userspace and designspace values will be according to the axis mapping.
+    </li>
+    <li>
+        When converting an anisotropic location only the xvalue will be used.
+    </li>
+</ul>
+
+<h3 id="note2-about-anisotropic-instances">Note 2: About anisotropic instances</h3>
+
+<ul>
+    <li>
+        The axis columns in the Instances Tab accept <b>two values separated by a space to indicate an anisotropic location.</b> For instance: <code>900 800</code> means: <em>horizontal interpolation at value <code>900</code> and vertical interpolation at value <code>800</code></em>.
+    </li>
+    <li>
+        <b>Please note: anisotropic locations are not supported in Variable Fonts.</b> Tools that generate fonts from designspaces may ignore the second value, or ignore the entire instance. Anisotropy is a useful tool during exploration and design and so designspaces can store them.
+    </li>
+    <li>
+        Select MutatorMath to generate instances with anisotropic locations.
+    </li>
+    <li>
+        Note: it is not clear what to expect of interactions between an axis map and an anisotropic location. The authors advise to experiment with anisotropy <strong>before</strong> defining axis maps for anisotropic instance locations.
+    </li>
+</ul>
+
+
+
+<p><img class="bigicon" src="toolbar_500_500_icon_rules.png" alt="DSE2 rules icon"></p>
+
+<h2 id="rules">Rules Tab <a href="#toc">↑</a></h3>
+
+<img alt="screenshot of DSE2 rules tab" src="screenshot_mutatorsans_rulestab.jpg">
+
+<p class="caption">The rules tab is an editor for defining rules and condition sets. Tools may interpret these rules into <code>rvrn</code> features. The <a href="#location-preview-window">Preview Window</a> does <b>not</b> show the rules in action. While this would indeed be useful, it requires compiling the features and that is currently outside the scope of this extension. We recommend using <b>FontGoggles</b> for proofing the rules.</p>
+
+<h3>Rules syntax</h3>
+
+<div><pre><code class="language-none"># Rules syntax
+
+# The name of the rule starts on a new line.
+# The contents of the rule is indented:
+switching a&#39;s
+    # a list of source glyph &gt; substituted glyph
+    a &gt; a.alt
+    agrave &gt; agrave.alt
+
+    # conditions that trigger the rule:
+    # &lt;axis name&gt; startRange-endRange
+    optical 500-1000
+
+    # a condition set with two conditions
+    weight 800-1000 width 200-1000
+
+# Please note: in these examples, lines starting with # are comments.
+# The comments are not saved in the designspace.
+</code></pre>
+</div>
+
+
+<p><img class="bigicon" src="toolbar_500_500_icon_location_labels.png" alt="DSE2 location labels icon"></p>
+
+<h2 id="location-labels">Location Labels Tab <a href="#toc">↑</a></h3>
+
+<p>The location labels tab is an editor for defining labels for specific points in the designspace. This data can be used to define parts of a STAT table.</p>
+
+<a href="https://fonttools.readthedocs.io/en/latest/designspaceLib/xml.html#labels-element-top-level">See fontTools documentation on the top-level <code>labels</code> element.</a>
+
+<h3>Location Labels syntax</h3>
+
+<div><pre><code class="language-none"># Location Labels
+
+# styleName:
+Neue Style Italic
+
+    # optional localisations
+    # starts with a ? &lt;language tag&gt; &lt;localised string&gt;
+    ?  fr  &quot;Un Style&quot;
+    # optionally translation
+    ?  fr  &quot;Un Style&quot;
+
+    # location name if the axis and value
+    weight 300
+    width 40
+    italic 1
+    boldness 30
+
+# Please note: in these examples, lines starting with # are comments.
+# The comments are not saved in the designspace.
+</code></pre>
+</div>
+
+<p><img class="bigicon" src="toolbar_500_500_icon_variable_fonts.png" alt="DSE2 variable fonts icon"></p>
+
+<h2 id="variable-fonts">Variable Fonts Tab <a href="#toc">↑</a></h3>
+
+<img alt="screenshot of DSE2 variable fonts tab" src="screenshot_mutatorsans_variablefontstab.jpg">
+
+<p>This describes different subset variable fonts that can be generated from the current designspace file. For instance this could mean a smaller number of axes, or a specific range of an axis. You can also specify different filenames for these variable fonts.</p>
+
+<a href="https://fonttools.readthedocs.io/en/latest/designspaceLib/xml.html#variable-fonts-element">See fontTools documentation on the <code>variable-font</code> element.</a>
+
+<h3>Variable Fonts syntax</h3>
+
+<div><pre><code class="language-none"># Variable Font syntax
+
+&lt;name of the variableFont&gt;
+    # indent
+    &gt; "&lt;fileName of the variable font file&gt;"   # optional
+
+    &gt; "path/to/my/fontVF.ttf"
+
+    # a full axis subset
+    # i.e. "weight", not "wght"
+    &lt;axisName&gt;
+
+    # example: include the whole weight axis
+    weight
+    ...
+
+    # an axis subset at specific userspace value
+    # i.e. "weight", not "wght"
+    &lt;axisName&gt; &lt;value&gt;
+
+    # example
+    weight 400
+    ...
+
+    # an axis subset with a sub range
+    &lt;axisName&gt; &lt;minimumUserValue&gt; &lt;userDefault&gt; &lt;maximumUserValue&gt;
+
+    # example
+    weight 300 400 700
+    ...
+
+# Please note: in these examples, lines starting with # are comments.
+# The comments are not saved in the designspace.
+</code></pre>
+</div>
+
+
+<p><img class="bigicon" src="toolbar_500_500_icon_problems.png" alt="DSE2 problems icon"></p>
+
+<h2 id="problems">Problems Tab <a href="#toc">↑</a></h3>
+
+<img alt="screenshot of DSE2 problems tab" src="screenshot_mutatorsans_problemstab.jpg">
+
+<p>This tab lists some of the problems this designspace might have. From structural issues that block any further processing, to missing ufos, missing or duplicate values and glyphs with compatibility issues.
+This uses <a
+    href="https://github.com/LettError/DesignspaceProblems"
+    >DesignspaceProblems.
+</a> to do the analysis. It aims to list all the problems that prevent the previews and test fonts from being generated. It does not go very deep into the more exotic issues that may occur.
+
+</p>
+
+
+<p><img class="bigicon" src="toolbar_500_500_icon_notes.png" alt="DSE2 notes icon"></p>
+
+<h2 id="notes">Notes Tab <a href="#toc">↑</a></h3>
+
+<p>This tab is for your notes and are stored in the Designspace. This can be any kind of note or remark. Notes are not processed in any way.</p>
+
+
+<h2 id="location-preview-window">Preview Window<a href="#toc">↑</a></h3>
+
+<p>
+    <img alt="screenshot of DSE2 preview window" src="screenshot_mutatorsans_previewwindow1.jpg">
+</p>
+
+<p>
+    The most requested feature for designspace editing tools: a preview for instance and source locations.
+</p>
+
+<ul>
+    <li><img alt="icon for the preview window" src="chart.bar.doc.horizontal2x.png"> Preview Window icon. </li>
+    <li>Type text and /glyphnames in the text box at the top.</li>
+    <li>Options available in the left menu at the top right:
+        <ul>
+            <li>
+                <b>Single Line / Multiline:</b> see all selected locations on separate lines, or on a single line.
+            </li>
+            <li>
+                <b>Invert:</b> white on black, or black on white</li>
+            <li>
+                <b>Show Sources / Show Instances:</b> show the selected items from the sources tab, or from the instances tab, or both.</li>
+            <li>
+                <b>Sort Line by area:</b> rank the preview lines based on the total surface areas of all glyphs on the line. This is calculated without removing overlap, so there may be some errors.</li>
+            <li>
+                <b>Sort Line by length:</b> rank the lines by their total length.</li>
+            <li>
+                <b>Sort Line by density:</b> rank the lines by the black / white ratio</li>
+            </li>
+        </ul>
+    </li>
+    <li>A basic axis location panel is available from the <b>pin-on-ellipse</b> icon at the top right. A preview line is shown, marked with a red pin.
+<img src="previewWindow_options2.png">
+    </li>
+</ul>
+
+
+
+
+<p><img class="bigicon" src="toolbar_500_500_icon_notifications.png" alt="DSE2 notes icon"></p>
+
+
+<h2 id="designspace-scripting">Scripting with the current designspace<a href="#toc">↑</a></h2>
+
+With a document open in DesignspaceEditor you can call <code>CurrentDesignspace()</code>, similar to <code>CurrentFont()</code> and <code>CurrentGlyph()</code>. This returns the designspace wrapped in a <code>UFOOperator</code> object that can calculate single glyphs, kerning and font info.
+
+<h3>Making a glyph</h3>
+This example calculates a single glyph at the default location. It returns a mathGlyph.
+
+<pre><code>d = CurrentDesignspace()
+loc = d.newDefaultLocation()
+g = d.makeOneGlyph("A", location=loc)
+
+# matGlyph objects can easily be converted
+g2 = RGlyph()
+g2.fromMathGlyph(g)
+</code></pre>
+
+What is happening here? Step by step: <b>CurrentDesignspace</b> returns a UFOOperator object for the current designspace.
+<b>d.newDefaultLocation()</b> creates a dict representing the default location in design coordinates. For this example it is a quick way to get a valid location, but you will probably want to see more exotic locations. Then, <b>makeOneGlyph</b> creates a new glyph object for the given glyphName and a location dict. The result is a <b>MathGlyph</b> object that can be converted to a regular RoboFont glyph object.
+
+<h3>Setting the preview location</h3>
+
+DSE2 keeps track of the "current preview location". You can set this location with the UI and axis sliders in the Preview Window. But you can also set it with a script.
+
+<pre><code>
+d = CurrentDesignspace()
+previewLoc = d.randomLocation()
+d.setPreviewLocation(previewLoc)</code></pre>
+
+
+<h3>Going through all designspaces</h3>
+
+You can use <code>AllDesignspaces()</code> to get a list of all open designspace documents. Optionally you can pass a font object with <code>usingFont</code> to get only the designspaces that use that font.
+
+<pre><code>import os
+d = AllDesignspaces()
+for i, doc in enumerate(AllDesignspaces()):
+    print(f"{i}: {os.path.basename(doc.path)}")
+f = CurrentFont()
+for doc in AllDesignspaces(usingFont=f):
+    print(f"\nOnly using {os.path.basename(f.path)}:", f"{os.path.basename(doc.path)}")</code></pre>
+
+<pre><code>0: Sans_wdth.designspace
+1: Experimental_serif.designspace
+
+Only using Test-Light.ufo: Experimental_serif.designspace</code></pre>
+
+<h3>Calculating kerning and info</h3>
+This example calculates a single kerning pair and a font info object. <code>makeOneKerning</code> accepts an optional list of pairs to calculate. This can be faster, for instance if you want to prepare a preview of just a handful of glyphs, but with proper kerning. If no pairs are given, all pairs will be calculated. This is still fast, but it all adds up,
+
+<code>
+    <pre>d = CurrentDesignspace()
+loc = d.newDefaultLocation()
+
+pairs = [('public.kern1.i', 'public.kern2.b')]
+kern = d.makeOneKerning(loc, pairs)
+print(kern.items())
+
+info = d.makeOneInfo(loc)
+print(info)
+    </pre>
+</code>
+
+
+<h3>Calculating an instance and drawing in Drawbot</h3>
+
+With the Drawbot extension in RoboFont, you can call <code>CurrentDesignspace()</code> and draw interpolated glyphs.
+
+<code>
+    <pre>#drawbot
+size(1000, 500)
+d = CurrentDesignspace()
+fill(None)
+stroke(0)
+strokeWidth(.5)
+with savedState():
+    translate(100, 100)
+    scale(0.5)
+    for i in range(20):
+        loc = d.randomLocation()
+        g = d.makeOneGlyph("A", location=loc)
+        bp = BezierPath()
+        g.draw(bp)
+        drawPath(bp)
+</pre>
+</code>
+
+<a href="https://github.com/LettError/designSpaceRoboFontExtension/tree/master/Scripting%20examples">More scripting examples in the GitHub designSpaceRoboFontExtension repository.</a>
+
+<h2 id="ufooperator-methods">Useful methods of UFOOperator<a href="#toc">↑</a></h2>
+
+<p>
+<code>CurrentDesignspace</code> returns a <code>UFOOperator</code> object representing the designspace. <code>UFOOperator</code> takes care of the loading the fonts and it prepares interpolating objects for all the data, both in <b>varlib and mutatorMath</b> flavors. It understands <b>anisotropic</b> coordinates, and it can handle <b>extrapolation</b>. <code>UFOOperator</code> also caches its results, so there is some economy. The object is pretty easy to script with as well. To see how UFOOperator works, please check the source on <a href="https://github.com/LettError/ufoProcessor/blob/master/Lib/ufoProcessor/ufoOperator.py">GitHub</a>.
+</p>
+
+<code>UFOOperator</code> has the many of the attributes and methods as the fonttools designspace object, and then some additional ones. Building a new designspace with UFOOperator is very similar to what <a href="https://fonttools.readthedocs.io/en/latest/designspaceLib/scripting.html">is described here</a>.
+
+<code>
+    <pre>d = CurrentDesignspace()
+# source objects
+print(d.sources)
+# instance objects
+print(d.instances)
+# axes objects
+print(d.axes)
+</pre>
+</code>
+
+<p>
+    In general: <code>d.useVarlib=True</code> will appply the fonttools.varlib model interpolations. <code>d.useVarlib=False</code> will use the mutatorMath model for interpolations. The Varlib model is very close to how Variable Fonts work. MutatorMath is a bit more flexible: it can do anisotropic interpolation and it is much more flexible with incomplete sets of sources. Both models can extrapolate now, though their results might not be the same if there are unaligned, off-axis masters in the system.</p>
+
+<p>
+    UFOOperator will assume locations are in <b>designspace coordinates</b>. You can use the `bend` argument to indicate that a location has to be mapped from user coordinates to design coordinates. The competing coordinate systems can be a bit confusing, especially if you use userLocations in the instances. Often the axis mappings are added much later than the instances, so there will be a moment when you have to carefully look at where the instances are. The DSE has a menu for converting between <b>User coordinates</b> to <b>Design coordinates</b>. So, before you assume the code is getting the wrong results, check your axis mappings and locations, and make sure you are passing the right type to UFOOperator. If you're sure the location is in designspace coordinates, leave `bend=False`.
+</p>
+
+<p>
+    This is a selection of the methods available in UFOOperator that are probably must useful to the scripter. Check <a href="https://github.com/LettError/ufoProcessor/blob/master/Lib/ufoProcessor/ufoOperator.py">GitHub</a> for more.
+</p>
+
+
+
+
+<h4>Methods for making things</h4>
+<p>
+    <ul>
+        <li>
+            <code><b>makeOneGlyph</b>(glyphName, location, decomposeComponents=True, useVarlib=False, roundGeometry=False, clip=False)</code> make a glyph for this location.
+            <ul>
+                <li><code>location</code> is in design coordinates</li>
+                <li>
+                    <code>decomposeComponents</code> returns a glyph with outlines, useful if you want to draw a single glyph and you don't have a font to draw the components.
+                </li>
+                <li>
+                    <code>useVarlib</code> can be used to switch between varlib and mutatormath, just for this one glyph.
+                </li>
+                <li>
+                    <code>roundGeometry</code> will round all coordinates to full integers.
+                </li>
+                <li>
+                    <code>clip</code> prevents extrapolation in case the location axis values exceeds the axis extremes.
+                </li>
+            </ul>
+        </li>
+        <li>
+            <code><b>makeOneInfo</b>(location, roundGeometry=False, clip=False)</code>: make an info object for this location.
+            <ul>
+                <li><code>location</code> is in design coordinates</li>
+                <li>
+                    <code>clip</code> prevents extrapolation in case the location axis values exceeds the axis extremes.
+                </li>
+            </ul>
+        </li>
+        <li>
+            <code><b>makeOneKerning</b>(location, pairs=None)</code> make a kerning object for this location.
+            <ul>
+                <li><code>location</code> is in design coordinates</li>
+                <li><code>pairs</code> optional list of pairs to include. This can be faster, for instance if you want to prepare a preview of just a handful of glyphs, but with proper kerning. If no pairs are given, all kerning will be calculated.</li>
+            </ul>
+        </li>
+        <li>
+            <code><b>makeFontProportions</b>(location, bend=False, roundGeometry=True)</code> Calculate the basic font proportions for this location, to map out expectations for drawing.
+        </li>
+        <li>
+            <code><b>generateUFOs</b>(useVarlib=None)</code> generate <i>all</i> available instance descriptors as UFOs.
+            <ul>
+                <li>
+                    This will calculate all glyphs, kerning, and font info for each instance.
+                </li>
+                <li>
+                    UFOs are saved at the path is stored in the instanceDescriptors.
+                </li>
+                <li>
+                    If no instances are defined, nothing will generate.
+                </li>
+                <li>
+                    Any rules defined in this designspace are <i>not</i> executed for these UFOs. This was different for UFOProcessor that swapped glyphs according to the rules. Motivation: rule execution has become very sophisticated and can not always be emulated by swapping. So, it needs to happen, but not here.
+                </li>
+                <li>
+                    While pretty fast, this will take a bit of time.
+                </li>
+            </ul>
+        </li>
+        <li>
+            <code><b>makeInstance</b>(instanceDescriptor, glyphNames=None, decomposeComponents=False, pairs=None, bend=False)</code> this saves a single UFO instance to disk.
+            <ul>
+                <li>
+                    <code>glyphNames</code> is an optional list of glyph names to generate. Note this does not update any features.
+                </li>
+                <li>
+                    <code>decomposeComponents</code> can be True to decompose all glyphs. This is useful when generating small sets of outlines for a preview.
+                </li>
+                <li>
+                    <code>pairs</code> is an optional list of kern pairs to make. If no pairs given, all kerning will be calculated.
+                </li>
+            </ul>
+        </li>
+    </ul>
+</p>
+
+<h4>Preparing a UFOOperator</h4>
+
+<p>
+    <ul>
+        <li>
+            <code><b>loadFonts</b>()</code>: this loads the fonts, needs to called before anything can be calculated. Note: the designspace returned from CurrentDesignspace already has the fonts loaded, but if you construct your own UFOOperatpr designspace object, you will have to load the fonts.
+        </li>
+        <li>
+            <code><b>updateFonts</b>(fontObjects)</code>: fontObjects is a list of RoboFont font objects that are to be used in the designspace. If you want to explicitly want to put new fonts in the machine.
+        </li>
+        <li>
+            <code><b>getFonts</b>()</code> returns a list of (font object, location) tuples. This is not necessarily the same list as your sources: the same font object can be used in multiple locations.
+        </li>
+    </ul>
+</p>
+
+<h4>Methods for locations</h4>
+
+<p>
+    <ul>
+        <li>
+            <code><b>findDefault</b>(discreteLocation=None)</code> returns the default location for the system or the discrete location.
+        </li>
+        <li>
+            <code><b>findAllDefaults</b>()</code> collect all default sourcedescriptors for all discrete locations. In a designspace with a discrete axis, every discrete location will have its own default.
+        </li>
+        <li>
+            <code><b>findDefaultFont</b>(discreteLocation=None)</code>: returns the default fontObject for the system or the discrete location.
+        </li>
+        <li>
+            <code><b>splitLocation</b>(location)</code>: returns the design location split into a <b>continouous</b> and a <b>discrete</b> part.
+        </li>
+        <li>
+            <code><b>getFullDesignLocation</b>(location)</code>: returns the given location converted to designspace coordinates.
+        </li>
+        <li>
+            <code><b>getDiscreteLocations</b>()</code>: return a list of all possible discrete locations for this system.
+        </li>
+        <li>
+            <code><b>newDefaultLocation</b>(bend=False, discreteLocation=None)</code>: returns a new location that is on the default of all axes.
+            <ul>
+                <li>
+                    Use `bend=True` to get a default in user space coordinates.
+                </li>
+                <li>
+                    Use `bend=False` to get the default in designspace coordinates.</li>
+                <li>
+                    Pass a discreteLocation dict to obtain the default for that discrete location.
+                </li>
+            </ul>
+        </li>
+        <li>
+            <code><b>isAnisotropic</b>(location)</code> returns True if this location is anisotropic.
+        </li>
+        <li>
+            <code><b>splitAnisotropic</b>(location)</code> returns the x and y components of this location as two separate location dicts.
+        </li>
+        <li>
+            <code><b>getLocationType</b>(location)</code> splits the location in its anisotropic components, a flag if this location is anisotropic, as well as continuous and discrete parts. Specifically returns: <code>isAnisotropic, continuousLocation, discreteLocation, locHorizontal, locVertical</code>.
+        </li>
+        <li>
+            <code><b>randomLocation</b>(extrapolate=0, anisotropic=False, roundValues=True, discreteLocation=None)</code> returns a good, reliably valid random location, for quick testing and entertainment.
+            <ul>
+                <li>
+                    <code>extrapolate=0</code> is a factor that determines the amount of extrapolation. The <code>(max-min)</code> distance. So <code>0 = no extrapolation</code>. And <code>0.1 = 0.1 * (max - min)</code>
+                </li>
+                <li>
+                    <code>anisotropic=True</code> <i>all</i> continuous axes get separate x, y values. This may not be very useful from a typographic viewpoint, but it can be good for testing.
+                </li>
+                <li>discrete axes get a random choice from the defined axis values</li>
+                <li>continuous axes get an interpolated value between axis.minimum and axis.maximum
+  * Note: this always returns a designspace location, not a userspace location.</li>
+            </ul>
+        </li>
+        <li>
+            <code><b>locationWillClip</b>(location</code> will return True is this designlocation will be clipped in one or more of the axes. Clipping can be an indication that the location is extrapolating.
+        </li>
+        <li>
+            <code><b>clipDesignLocation</b>(location)</code> returns a clipped version of this designlocation
+        </li>
+        <li>
+            <code><b>getAxisExtremes</b>(axisRecord)</code> returns the <code>axisMinimum</code>, <code>axisDefault</code> and <code>axisMaximum</code> in <b>design coordinates</b>. Designspace axisDescriptors keep these axis values in userspace coordinates and that is not always practical. This is a one-stop conversion.
+        </li>
+    </ul>
+</p>
+
+<h4>Miscellaneous</h4>
+
+<p>
+    <ul>
+        <li>
+            <code><b>glyphChanged</b>(glyphName, includeDependencies=False)</code>. This instructs the operator to clear any cached data related to this glyph. If you want to make sure the next time you calculate something with this glyph the results will be fresh. There are more specific cache-related methods.
+        </li>
+        <li>
+            <code><b>collectForegroundLayerNames</b>()</code> returns a list of the names of all the foreground layers used by all sources.
+        </li>
+        <li>
+            <code><b>getCharacterMapping</b>(discreteLocation=None)</code> returns a unicode -> glyphname map for the default of the whole system or discreteLocation. As the defaults at discrete locations can be quite different, UFOOperator makes no assumptions about what is available.
+        </li>
+    </ul>
+</p>
+
+
+
+
+<p><img class="bigicon" src="toolbar_500_500_icon_notifications.png" alt="DSE2 notifications icon"></p>
+
+
+
+
+<h2 id="designspace-notifications">Notifications<a href="#toc">↑</a></h3>
+
+<p>DesignspaceEditor2 sends notifications for events for the documents it has open. This means scripts and tools can subscribe to these and get access to live designspace data. With these notifications it will be easier to build new things that work with your designspaces.</p>
+
+<p>The source for these notifications at <a href="https://github.com/LettError/designSpaceRoboFontExtension/blob/5e0d700daedcac683bf00a5685e9cddef5b3aab1/DesignspaceEditor2.roboFontExt/lib/main.py#L55"> github.com/LettError/designSpaceRoboFontExtension</a>.
+</p>
+
+<h3 id="designspace-notification-subscriber">Receiving and responding to notifications<a href="#toc">↑</a></h3>
+
+This is a demo of Subscriber receiving designspace notifications.
+
+<pre><code>
+from mojo.subscriber import Subscriber, registerRoboFontSubscriber
+
+class DesignspaceEditorSubscriber(Subscriber):
+
+    debug = True
+
+    def designspaceEditorDidOpenDesignspace(self, info):
+        print("opened a designspace:", info["designspace"])
+
+    def designspaceEditorDidCloseDesignspace(self, info):
+        print("closed a designspace:", info["designspace"])
+
+    def designspaceEditorAxesDidAddAxis(self, info):
+        print("created a new axis:", info["axis"], "for", info["designspace"])
+
+    def designspaceEditorRulesDidChange(self, info):
+        print("rules did chagne for:", info["designspace"])
+
+registerRoboFontSubscriber(DesignspaceEditorSubscriber)
+</code></pre>
+
+<ul>
+    <li>
+        <a href="https://robofont.com/documentation/topics/subscriber/?highlight=subscriber">
+            Additional Subscriber documentation at RoboFont.com
+        </a>
+    </li>
+</ul>
+
+
+<h3 id="designspace-notification-overview">Overview of DSE2 Notifications<a href="#toc">↑</a></h3>
+
+
+<table>
+        <thead>
+            <td>
+                <b>Notification name</b>
+            </td>
+            <td>
+                <b>Description</b>
+            </td>
+            <td>
+                <b>Possble actions</b>
+            </td>
+        </thead>
+    <tr>
+        <td>
+            <b>Document related notifications</b>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <code>designspaceEditorWillOpenDesignspace</code>
+        </td>
+        <td>DSE is about to open a designspace file.</td>
+        <td></td>
+    </tr>
+
+    <tr>
+        <td>
+            <code>designspaceEditorDidOpenDesignspace</code>
+        </td>
+        <td>DSE has opened a designspace file.</td>
+        <td>Load fonts, build mutators.</td>
+    </tr>
+    <tr>
+        <td>
+            <code>designspaceEditorDidCloseDesignspace</code>
+        </td>
+        <td>DSE has closed designspace file.</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+            <b>Axis related notifications</b>
+        </td>
+        <td>
+        </td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+            <code>designspaceEditorAxisLabelsDidChange</code>
+        </td>
+        <td>DSE has changed one of the axis labels.</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+            <code>designspaceEditorAxisMapDidChange</code>
+        </td>
+        <td>DSE has changed the map of one of the axes. </td>
+        <td>Geometry has changed.</td>
+</tr>
+    <tr>
+        <td>
+            <code>designspaceEditorAxesWillRemoveAxis</code>
+        </td>
+        <td>DSE is about to remove one of the axes.</td>
+        <td>Geometry will change.</td>
+    </tr>
+    <tr>
+        <td>
+            <code>designspaceEditorAxesDidRemoveAxis</code>
+        </td>
+        <td>DSE has removed one of the axes.</td>
+        <td>Geometry has changed.</td>
+    </tr>
+    <tr>
+        <td>
+            <code>designspaceEditorAxesWillAddAxis</code>
+        </td>
+        <td>DSE is about to add a new axis.</td>
+        <td>Rebuild</td>
+    </tr>
+    <tr>
+        <td>
+            <code>designspaceEditorAxesDidAddAxis</code>
+        </td>
+        <td>DSE has added a new axis.</td>
+        <td>Geometry has changed. Probably the new system will look the same, the geometry has changed and things need to rebuild anyway.</td>
+    </tr>
+    <tr>
+        <td>
+            <code>designspaceEditorAxesDidChangeSelection</code>
+        </td>
+        <td>DSE changed the selected axis. (clarify)</td>
+        <td>No rebuild needed.</td>
+    </tr>
+    <tr>
+        <td>
+            <code>designspaceEditorAxesDidChange</code>
+        </td>
+        <td>DSE made a change to the axes. (clarify)</td>
+        <td>Rebuild</td>
+    </tr>
+
+    <tr>
+        <td>
+            <b>Source related notifications</b>
+        </td>
+        <td>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <code>designspaceEditorSourcesWillRemoveSource</code>
+        </td>
+        <td>DSE is about to remove a source.</td>
+        <td>Geometry will change.</td>
+    </tr>
+
+    <tr>
+        <td>
+            <code>designspaceEditorSourcesDidRemoveSource</code>
+        </td>
+        <td>DSE has removed a source.</td>
+        <td>Geometry has changed.</td>
+    </tr>
+
+    <tr>
+        <td>
+            <code>designspaceEditorSourcesWillAddSource</code>
+        </td>
+        <td>DSE is about to add a source.</td>
+        <td>Geometry will change.</td>
+    </tr>
+
+    <tr>
+        <td>
+            <code>designspaceEditorSourcesDidAddSource</code>
+        </td>
+        <td>DSE has added a source.</td>
+        <td>Rebuild</td>
+    </tr>
+
+
+    <tr>
+        <td>
+            <code>designspaceEditorSourcesDidChangeSelection</code>
+        </td>
+        <td>DSE changed the selected source. (clarify)</td>
+        <td></td>
+    </tr>
+
+
+    <tr>
+        <td>
+            <code>designspaceEditorSourcesDidCloseUFO</code>
+        </td>
+        <td>DSE closed a UFO: there will be no visible change, but the source was closed RF and the UFO will load from file.</td>
+        <td>Rebuild.</td>
+    </tr>
+
+    <tr>
+        <td>
+            <code>designspaceEditorSourcesDidOpenUFO</code>
+        </td>
+        <td>DSE opened a UFO.</td>
+        <td>Rebuild: there will be no visible change, but the source is now open in RF and the source will load from there.</td>
+    </tr>
+
+    <tr>
+        <td>
+            <code>designspaceEditorSourcesDidChanged</code>
+        </td>
+        <td>DSE noticed one or more of its sources changed.</td>
+        <td>Rebuild</td>
+    </tr>
+
+
+    <tr>
+        <td>
+            <b>Instance related notifications</b>
+        </td>
+        <td>
+        </td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+            <code>designspaceEditorInstancesWillRemoveInstance</code>
+        </td>
+        <td>DSE is about to remove an instance.</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+            <code>designspaceEditorInstancesDidRemoveInstance</code>
+        </td>
+        <td>DSE has removed an instance.</td>
+        <td>Rebuild instance lists</td>
+    </tr>
+
+    <tr>
+        <td>
+            <code>designspaceEditorInstancesWillAddInstance</code>
+        </td>
+        <td>DSE is about to add an instance.</td>
+        <td></td>
+    </tr>
+
+    <tr>
+        <td>
+            <code>designspaceEditorInstancesDidAddInstance</code>
+        </td>
+        <td>DSE had added an instance.</td>
+        <td>Rebuild instance lists</td>
+    </tr>
+
+    <tr>
+        <td>
+            <code>designspaceEditorInstancesDidChangeSelection</code>
+        </td>
+        <td>DSE changed the selected instance.</td>
+        <td></td>
+    </tr>
+
+    <tr>
+        <td>
+            <code>designspaceEditorInstancesDidChange</code>
+        </td>
+        <td>DSE noticed one or more of its instances changed. (Clarify)</td>
+        <td></td>
+    </tr>
+
+    <tr>
+        <td>
+            <b>Rule related notifications</b>
+        </td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+            <code>designspaceEditorRulesDidChange</code>
+        </td>
+        <td>DSE reports one or more of the rules changed.</td>
+        <td></td>
+    </tr>
+
+
+    <tr>
+        <td>
+            <b>Label related notifications</b>
+        </td>
+        <td></td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>
+            <code>designspaceEditorLabelsDidChange</code>
+        </td>
+        <td>DSE reports one or more of the location labels changed.</td>
+        <td></td>
+    </tr>
+
+    <tr>
+        <td>
+            <b>Note related notifications</b>
+        </td>
+        <td></td>
+        <td></td>
+    </tr>
+
+
+    <tr>
+        <td>
+            <code>designspaceEditorNotesDidChange</code>
+        </td>
+        <td>DSE reports a change in the notes.</td>
+        <td></td>
+    </tr>
+
+
+
+    <tr>
+        <td>
+            <b>Notifications related to editing source data in RoboFont</b>
+        </td>
+        <td></td>
+        <td></td>
+    </tr>
+
+
+    <tr>
+        <td>
+            <code>designspaceEditorSourceGlyphDidChange</code>
+        </td>
+        <td>DSE reports changes to a glyph of one of the open sources.</td>
+        <td>Rebuild glyph mutators</td>
+    </tr>
+
+    <tr>
+        <td>
+            <code>designspaceEditorSourceInfoDidChange</code>
+        </td>
+        <td>DSE reports changes to font info of one of the open sources.</td>
+        <td>Rebuild info mutators</td>
+    </tr>
+
+
+    <tr>
+        <td>
+            <code>designspaceEditorSourceKerningDidChange</code>
+        </td>
+        <td>DSE reports changes to font kerning of one of the open sources.</td>
+        <td>Rebuild kerning mutators</td>
+    </tr>
+
+
+    <tr>
+        <td>
+            <code>designspaceEditorSourceGroupsDidChange</code>
+        </td>
+        <td>DSE reports changes to font groups of one of the open sources.</td>
+        <td>Rebuild kerning mutators</td>
+    </tr>
+
+
+    <tr>
+        <td>
+            <code>designspaceEditorSourceGroupsDidChange</code>
+        </td>
+        <td>DSE reports changes to font groups by a RF editor.</td>
+        <td></td>
+    </tr>
+
+
+
+    <tr>
+        <td>
+            <b>Experimental / unsupported</b>
+        </td>
+        <td>
+        </td>
+    </tr>
+
+    <tr>
+        <td>
+            <code>designspaceEditorDidChange</code>
+        </td>
+        <td>DSE reports every change.</td>
+        <td>Be careful, this will call a lot and might cause performance issues.</td>
+    </tr>
+
+    <tr>
+        <td>
+            <code>designspaceEditorPreviewLocationDidChange</code>
+        </td>
+        <td>DSE report changes to the preview location.</td>
+        <td></td>
+    </tr>
+
+    <tr>
+        <td>
+            <code>designspaceEditorSourceDataDidChange</code>
+        </td>
+        <td>DSE reports every change to the source data.</td>
+        <td>Be careful, this will call a lot and might cause performance issues.</td>
+    </tr>
+
+    <tr>
+        <td>
+            <code>designspaceEditorSourceFontDidChangedExternally</code>
+        </td>
+        <td>DSE reports every change noticed external changes to source data that is not open in RF.</td>
+        <td>Be careful, this will call a lot and might cause performance issues.</td>
+    </tr>
+
+
+
+
+<!--
+    ADD
+    https://github.com/LettError/designSpaceRoboFontExtension/blob/dse2.0/DesignspaceEditor2.roboFontExt/lib/main.py#L114-L134
+
+# =====================
+    # = font data changes =
+    # =====================
+
+    # any font data change
+    # "designspaceEditorSourceDataDidChange",
+
+    # glyph
+    "designspaceEditorSourceGlyphDidChange",
+
+    # font info
+    "designspaceEditorSourceInfoDidChange",
+
+    # font kerning
+    "designspaceEditorSourceKerningDidChange",
+
+    # font groups
+    "designspaceEditorSourceGroupsDidChange",
+
+    # external change, outside of RoboFont
+    "designspaceEditorSourceFontDidChangedExternally",
+ -->
+
+</table>
+
+
+
+
+<h2 id="acknowledgements">Acknowledgements<a href="#toc">↑</a></h2>
+
+<ul>
+    <li>
+        All the work on Designspace format 5, greatly improving the support for Variable Fonts, by <a href="https://github.com/fonttools">the FontTools developers</a>.
+    </li>
+    <li>All the GitHub sponsors for <a href="https://github.com/sponsors/letterror">LettError</a> and <a href="https://github.com/sponsors/typemytype">TypeMyType</a> that make projects like this possible.
+    </li>
+</ul>
+
+</body>
+</html>

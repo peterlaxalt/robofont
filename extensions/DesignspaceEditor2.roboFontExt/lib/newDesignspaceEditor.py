@@ -1,0 +1,3 @@
+from designspaceEditor.ui import DesignspaceEditorController
+
+DesignspaceEditorController()

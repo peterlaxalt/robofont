@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>addToMenu</key>
+	<array>
+		<dict>
+			<key>path</key>
+			<string>addGuideline.py</string>
+			<key>preferredName</key>
+			<string>Add segment guideline</string>
+			<key>shortKey</key>
+			<array>
+				<integer>1048576</integer>
+			    <string>/</string>
+			</array>
+		</dict>
+        <dict>
+			<key>path</key>
+			<string>removeGuidelines.py</string>
+			<key>preferredName</key>
+			<string>remove segment guidelines only</string>
+			<key>shortKey</key>
+			<array>
+				<integer>262144</integer>
+			    <string>/</string>
+			</array>
+		</dict>		
+	</array>
+	<key>developer</key>
+	<string>Jan Sindler</string>
+	<key>developerURL</key>
+	<string>https://www.futurefonts.xyz/jan-sindler</string>
+	<key>html</key>
+	<false/>
+	<key>launchAtStartUp</key>
+	<false/>
+	<key>mainScript</key>
+	<string/>
+	<key>name</key>
+	<string>Add segment guideline</string>
+	<key>requiresVersionMajor</key>
+	<string>3</string>
+	<key>requiresVersionMinor</key>
+	<string>2</string>
+	<key>timeStamp</key>
+	<real>1584558012.220368</real>
+	<key>version</key>
+	<string>0.2</string>
+</dict>
+</plist>
