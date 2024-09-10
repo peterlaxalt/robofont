@@ -10,18 +10,20 @@ class ReferenceCharacterWindow:
         self.font_name = "NotoSansJP-Bold" if "NotoSansJP-Bold" in self.fonts else (self.fonts[0] if self.fonts else "NotoSansJP-Bold")
         
         self.character = "う"
+
+        self.min_width = 300
         
         # Calculate initial window size based on character size
         font = NSFont.fontWithName_size_(self.font_name, 100)
         if font:
             text_size = self.calculateTextSize(self.character, font)
-            initial_width = max(int(text_size.width) + 20, 200)  # Minimum width 200 pixels
+            initial_width = max(int(text_size.width) + 20, self.min_width)  # Minimum width
             initial_height = int(text_size.height) + 120  # Additional space for the button
         else:
-            initial_width = 200
+            initial_width = self.min_width
             initial_height = 220  # Additional space for the button
         
-        self.w = vanilla.Window((initial_width, initial_height), "Reference Character Viewer")
+        self.w = vanilla.FloatingWindow((initial_width, initial_height), "Reference Character Viewer")
         
         # Centered and line-height adjusted textBox
         self.w.textBox = vanilla.TextBox((10, 40, -10, -40), "", alignment='center')
@@ -66,7 +68,7 @@ class ReferenceCharacterWindow:
 
             # Resize the window to fit the current character size
             text_size = self.calculateTextSize(self.character, font)
-            new_width = max(int(text_size.width) + 40, 200)  # Minimum width 200 pixels
+            new_width = max(int(text_size.width) + 40, self.min_width)  # Minimum width
             new_height = int(text_size.height) + 90  # Additional space for the button
             self.w.setPosSize((self.w.getPosSize()[0], self.w.getPosSize()[1], new_width, new_height))
 

@@ -758,7 +758,7 @@
 	<key>com.mechanic.checkForUpdate</key>
 	<true/>
 	<key>com.mechanic.lastUpdateCheck</key>
-	<real>1725207764.288841</real>
+	<real>1725820778.381578</real>
 	<key>com.mechanic.singleExtensionItems</key>
 	<array/>
 	<key>com.mechanic.urlstreams</key>
@@ -767,9 +767,9 @@
 		<string>https://robofontmechanic.com/api/v2/registry.json</string>
 	</array>
 	<key>com.netzallee.glyphProcessor.rotation</key>
-	<real>180</real>
+	<integer>0</integer>
 	<key>com.ninastoessinger.word-o-mat.case</key>
-	<integer>2</integer>
+	<integer>3</integer>
 	<key>com.ninastoessinger.word-o-mat.limitToCharset</key>
 	<string>True</string>
 	<key>com.ninastoessinger.word-o-mat.markColor</key>
@@ -783,7 +783,7 @@
 	<key>com.ninastoessinger.word-o-mat.minLength</key>
 	<integer>5</integer>
 	<key>com.ninastoessinger.word-o-mat.source</key>
-	<integer>4</integer>
+	<integer>9</integer>
 	<key>com.ninastoessinger.word-o-mat.wordCount</key>
 	<integer>40</integer>
 	<key>com.rafalbuchner.StemPlow.lineColor</key>
@@ -1579,11 +1579,11 @@
 	<key>de.kutilek.curveEQ.curvature</key>
 	<integer>3</integer>
 	<key>de.kutilek.curveEQ.curvatureFree</key>
-	<real>0.70102943420410158</real>
+	<real>0.5</real>
 	<key>de.kutilek.curveEQ.debug</key>
 	<false/>
 	<key>de.kutilek.curveEQ.method</key>
-	<integer>4</integer>
+	<integer>3</integer>
 	<key>de.kutilek.curveEQ.tension</key>
 	<real>0.75</real>
 </dict>
