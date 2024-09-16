@@ -758,7 +758,7 @@
 	<key>com.mechanic.checkForUpdate</key>
 	<true/>
 	<key>com.mechanic.lastUpdateCheck</key>
-	<real>1725820778.381578</real>
+	<real>1726331595.4595089</real>
 	<key>com.mechanic.singleExtensionItems</key>
 	<array/>
 	<key>com.mechanic.urlstreams</key>
@@ -767,7 +767,7 @@
 		<string>https://robofontmechanic.com/api/v2/registry.json</string>
 	</array>
 	<key>com.netzallee.glyphProcessor.rotation</key>
-	<integer>0</integer>
+	<real>180</real>
 	<key>com.ninastoessinger.word-o-mat.case</key>
 	<integer>3</integer>
 	<key>com.ninastoessinger.word-o-mat.limitToCharset</key>
@@ -832,6 +832,39 @@
 	<string>f</string>
 	<key>com.rafalbuchner.StemPlow.useShortcutToMoveWhileAlways</key>
 	<false/>
+	<key>com.rafalbuchner.mirroringDrawingGlobal</key>
+	<dict>
+		<key>colorFill</key>
+		<array>
+			<real>0.0</real>
+			<real>0.0</real>
+			<real>1</real>
+			<real>0.45000000000000001</real>
+		</array>
+		<key>colorStroke</key>
+		<array>
+			<real>0.0</real>
+			<real>0.0</real>
+			<real>1</real>
+			<real>0.45000000000000001</real>
+		</array>
+		<key>generateStrokeColorBasedOnFill</key>
+		<integer>0</integer>
+		<key>glyphSettings</key>
+		<dict>
+			<key>mirroringOptions</key>
+			<integer>0</integer>
+			<key>offset</key>
+			<array>
+				<real>0.0</real>
+				<real>0.0</real>
+			</array>
+		</dict>
+		<key>showOptions</key>
+		<array>
+			<integer>0</integer>
+		</array>
+	</dict>
 	<key>com.ryanbugden.editFontDimensions.identifiers</key>
 	<array>
 		<string>tdi4jIpTwX</string>

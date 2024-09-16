@@ -31,7 +31,7 @@ def setForegroundColor():
 
 # main variables
 boxHeight = 110
-fixedWidth = True
+fixedWidth = False
 
 boxPaddingX = 20
 boxPaddingY = 40
@@ -46,6 +46,7 @@ referenceFontFamily = 'Noto Sans JP Light'
 referenceFontSize = 20
 # unicode groups
 unicodeGroups = True
+# unicodeFilters = []
 unicodeFilters = ['Hiragana', 'Katakana']
 # unicodeFilters = ['Thai']
 

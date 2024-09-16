@@ -1,7 +1,7 @@
 from mojo.UI import CurrentFontWindow
 import AppKit
 import unicodedata
-from vanilla import CheckBox, FloatingWindow, List, LevelIndicatorListCell
+from vanilla import CheckBox, FloatingWindow, List, LevelIndicatorListCell, Button
 import glyphNameFormatter
 
 f = CurrentFont()
@@ -74,6 +74,10 @@ class RangeList(object):
             "Show Suffixed",
             callback=self.check_callback,
             value=False)
+        
+        # Add the 'Update' button
+        self.w.updateButton = Button((-98, -23, -10, 20), "Update", callback=self.update_callback)
+        
         self.w.open()
         # select the first item in the list and filter the glyph set
         # according to that selection
@@ -81,7 +85,10 @@ class RangeList(object):
         self.sel_callback(self.w.myList)
 
     def get_range_from_edges(self, range_name):
-        r_start, r_stop = reverse_ranges.get(range_name)
+        range_edges = reverse_ranges.get(range_name)
+        if range_edges is None:
+            return range()  # Return an empty range if the range_name is not found
+        r_start, r_stop = range_edges
         u_range = range(r_start, r_stop + 1)
         return u_range
 
@@ -120,6 +127,22 @@ class RangeList(object):
     def check_callback(self, sender):
         self.select_suffix = sender.get()
         self.select_ranges(self.selected_ranges)
+
+    def update_callback(self, sender):
+        # Refresh the data and update the display
+        self.font_code_points = list(sum([g.unicodes for g in self.f if g.unicodes], ()))
+        self.font_ranges = self.get_supported_range_names(self.font_code_points)
+        self.display_range_list = []
+        for range_name in self.font_ranges:
+            percentage = self.support_percentage(range_name)
+            self.display_range_list.append({
+                'Range': range_name,
+                'Support': percentage / 10,
+                '%': f'{round(percentage)}%',
+            })
+        self.w.myList.set(self.display_range_list)
+        CurrentFontWindow().getGlyphCollection().setQuery(None)
+        self.sel_callback(self.w.myList)
 
     def select_ranges(self, range_names):
         g_name_list = []
