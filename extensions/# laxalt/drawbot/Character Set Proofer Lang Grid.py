@@ -30,28 +30,39 @@ def setForegroundColor():
     # fill(0,0,0, 1)
 
 # main variables
-boxHeight = 110
+boxHeight = 140
 fixedWidth = False
 
-boxPaddingX = 20
-boxPaddingY = 40
-margin = 30
+# spacing
+boxPaddingX = 40  # Horizontal spacing between glyphs
+boxPaddingY = 80  # Vertical spacing between rows
+margin = 60       # Page margin
+rowSpacing = 20   # Additional spacing between rows of glyphs
 
+# display options
+showGlyphInfo = True     # Show glyph name and unicode value
+showGlyphBorder = True   # Show border around each glyph cell
+glyphInfoSize = 150      # Size of glyph info text
+
+# group display
 groupFontSize = 16
 groupFontFamily = 'Dank Mono'
 
+# reference font
 showReferenceFont = True
-referenceFontFamily = 'Noto Sans JP Light'
+referenceFontFamily = 'Noto Sans Regular'
 # referenceFontFamily = 'Noto Serif Thai'
 referenceFontSize = 20
+
 # unicode groups
 unicodeGroups = True
 # unicodeFilters = []
-unicodeFilters = ['Hiragana', 'Katakana']
+unicodeFilters = []
 # unicodeFilters = ['Thai']
 
 # return all glyphs at end
 returnAllGlyphs = False
+
 # define page size
 size('TabloidLandscape')
 # size('LetterLandscape')
@@ -110,6 +121,18 @@ if unicodeGroups and uniRangeGroups:
         print(i)
             
         if groupName:
+            # Calculate completion percentage for this group
+            total_chars_in_group = 0
+            completed_chars = 0
+            for glyphName in f.glyphOrder:
+                if glyphName != 'space':
+                    uniValue = n2u(glyphName)
+                    if u2r(uniValue) == groupName:
+                        total_chars_in_group += 1
+                        if f[glyphName].contours:  # Check if glyph has outlines
+                            completed_chars += 1
+            
+            completion_percentage = int((completed_chars / total_chars_in_group * 100) if total_chars_in_group > 0 else 0)
 
             # new page
             if i != 0:
@@ -119,10 +142,10 @@ if unicodeGroups and uniRangeGroups:
             # set position 
             xBox, yBox = x, y - (groupFontSize + margin)
             
-            # add group name
+            # add group name with completion percentage
             setForegroundColor()
             font(groupFontFamily, groupFontSize)
-            text(groupName.upper(), (x, pageHeight - (margin + groupFontSize)))
+            text(f"{groupName.upper()} / {completion_percentage}% COMPLETED", (x, pageHeight - (margin + groupFontSize)))
             
             # loop through glyphs
             for i, glyphName in enumerate(f.glyphOrder):
@@ -148,7 +171,7 @@ if unicodeGroups and uniRangeGroups:
                     # jump to next line
                     if xBox + boxWidth >= pageWidth - margin:
                         xBox = x
-                        yBox -= boxHeight + boxPaddingY
+                        yBox -= boxHeight + boxPaddingY + rowSpacing
                         # jump to next page
                         if yBox < margin:
                             yBox = y
@@ -156,13 +179,17 @@ if unicodeGroups and uniRangeGroups:
                             setBackgroundColor()
                             setForegroundColor()
                             font(groupFontFamily, groupFontSize)
-                            text(groupName.upper() + ' (CONTINUED)', (x, pageHeight - (margin + groupFontSize)))
+                            text(f"{groupName.upper()} (CONTINUED) / {completion_percentage}% COMPLETED", (x, pageHeight - (margin + groupFontSize)))
                             xBox, yBox = x, y - (groupFontSize + margin)
 
-                    # draw glyph cell
-                    #stroke(0, 0.5, 1)
-                    fill(None)
-                    rect(xBox, yBox, boxWidth, boxHeight)
+                    # draw glyph cell border if enabled
+                    if showGlyphBorder:
+                        stroke(1, 1, 1, 0.2)  # Light border
+                        fill(None)
+                        rect(xBox, yBox, boxWidth, boxHeight)
+                    else:
+                        stroke(None)
+                        fill(None)
 
                     # draw glyph
                     xGlyph = xBox
@@ -178,10 +205,14 @@ if unicodeGroups and uniRangeGroups:
                     if showReferenceFont:     
                         font(referenceFontFamily, referenceFontSize * (s * 100))
                         text(chr(uniValue), (0, referenceFontSize * (s * -140)))
+                    
+                    # show glyph info if enabled
+                    if showGlyphInfo:
+                        setForegroundColor()
+                        font(groupFontFamily, glyphInfoSize)
+                        text(f"{glyphName}\nU+{uniValue:04X}", (0, -boxHeight + glyphInfoSize))
                         
-                   
                     restore()
-                                
 
                     # move to next glyph
                     xBox += boxWidth + boxPaddingX
@@ -211,17 +242,21 @@ if returnAllGlyphs:
         # jump to next line
         if xBox + boxWidth >= pageWidth - margin:
             xBox = x
-            yBox -= boxHeight + boxPaddingY
+            yBox -= boxHeight + boxPaddingY + rowSpacing
             # jump to next page
             if yBox < margin:
                 yBox = y
                 newPage(pageWidth, pageHeight)
                 setBackgroundColor()
 
-        # draw glyph cell
-        # stroke(0, 0.5, 1)
-        fill(None)
-        rect(xBox, yBox, boxWidth, boxHeight)
+        # draw glyph cell border if enabled
+        if showGlyphBorder:
+            stroke(1, 1, 1, 0.2)  # Light border
+            fill(None)
+            rect(xBox, yBox, boxWidth, boxHeight)
+        else:
+            stroke(None)
+            fill(None)
 
         # draw glyph
         xGlyph = xBox
@@ -232,6 +267,14 @@ if returnAllGlyphs:
         stroke(None)
         scale(s)
         drawGlyph(g)
+        
+        # show glyph info if enabled
+        if showGlyphInfo:
+            setForegroundColor()
+            font(groupFontFamily, glyphInfoSize)
+            uniValue = n2u(glyphName)
+            text(f"{glyphName}\nU+{uniValue:04X}", (0, -boxHeight + glyphInfoSize))
+            
         restore()
 
         # move to next glyph

@@ -3,26 +3,35 @@
 <plist version="1.0">
 <dict>
 	<key>addToMenu</key>
-	<array/>
+	<array>
+		<dict>
+			<key>path</key>
+			<string>settings.py</string>
+			<key>preferredName</key>
+			<string>Settings</string>
+			<key>shortKey</key>
+			<string></string>
+		</dict>
+	</array>
 	<key>developer</key>
 	<string>Ryan Bugden</string>
 	<key>developerURL</key>
-	<string>https://ryanbugden.com</string>
+	<string>http://github.com/ryanbugden</string>
 	<key>html</key>
-	<false/>
+	<true/>
 	<key>launchAtStartUp</key>
 	<true/>
 	<key>mainScript</key>
-	<string>eyeliner.py</string>
+	<string>main.py</string>
 	<key>name</key>
 	<string>Eyeliner</string>
 	<key>requiresVersionMajor</key>
 	<string>4</string>
 	<key>requiresVersionMinor</key>
-	<string>5b</string>
+	<string>5</string>
 	<key>timeStamp</key>
-	<real>1705683842.2028642</real>
+	<real>1740786671.396019</real>
 	<key>version</key>
-	<string>2.8.5</string>
+	<string>3.0b</string>
 </dict>
 </plist>

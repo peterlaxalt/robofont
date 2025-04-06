@@ -122,10 +122,10 @@ class BatchController(ezui.WindowController):
                 )
             ),
             sourcesAddOpenUFOsButton=dict(
-                gravity="leading",
+                gravity="trailing",
             ),
             sourcesAddOpenDesignspacesButton=dict(
-                gravity="leading",
+                gravity="trailing",
             ),
             help=dict(
                 gravity="leading",
@@ -180,6 +180,11 @@ class BatchController(ezui.WindowController):
         # remove selected items
         table = self.w.getItem("sources")
         table.removeSelectedItems()
+        
+    def sourcesDeleteCallback(self, sender):
+        # remove selected items
+        table = self.w.getItem("sources")
+        table.removeSelectedItems()
 
     def sourcesAddOpenUFOsButtonCallback(self, sender):
         # add open ufo's only when they are saved on disk
@@ -230,12 +235,14 @@ class BatchController(ezui.WindowController):
 
     def generateCallback(self, sender):
         generateOptions = self.w.getItemValues()
-        generateOptions["sourceUFOPaths"], designspaceDocuments = self.getAllUFOPaths()
-        generateOptions["sourceDesignspacePaths"] = self.getAllDesignspacePaths()
+        generateOptions["sourceUFOs"], designspaceDocuments = self.getAllUFOPaths()
+        generateOptions["sourceDesignspaces"] = self.getAllDesignspacePaths()
 
-        if not generateOptions["sourceUFOPaths"] and not generateOptions["sourceDesignspacePaths"]:
+        if not generateOptions["sourceUFOs"] and not generateOptions["sourceDesignspaces"]:
             # no fonts found in the source table
             return
+
+        shouldGenerateUFOsFromDesignspaces = any([value for key, value in generateOptions.items() if "desktopFontGenerate" in key or "webFontGenerate" in key])
 
         def result(path):
             if path:
@@ -243,20 +250,22 @@ class BatchController(ezui.WindowController):
 
                 progress = self.startProgress("Generating...", parent=self.w)
                 for designspaceDocument in designspaceDocuments:
-                    designspaceDocument.generateUFOs()
+                    if shouldGenerateUFOsFromDesignspaces:
+                        designspaceDocument.generateUFOs()
+
+                settings = getExtensionDefault("com.typemytype.batch.settings", defaultSettings)
+
                 try:
                     self.report = Report()
                     self.report.writeTitle("Batch Generate:")
                     self.report.indent()
-
-                    settings = getExtensionDefault("com.typemytype.batch.settings", defaultSettings)
-
                     for generator in generators:
                         generator.build(root, generateOptions, settings, progress, self.report)
 
                 finally:
                     self.report.dedent()
-                    self.report.save(os.path.join(root, "Batch Generate Report.txt"))
+                    if settings["batchSettingStoreReport"]:
+                        self.report.save(os.path.join(root, "Batch Generate Report.txt"))
                     self.report = None
                     progress.close()
 

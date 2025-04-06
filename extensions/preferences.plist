@@ -678,6 +678,680 @@
 			<key>themeType</key>
 			<string>User</string>
 		</dict>
+		<dict>
+			<key>glyphViewAlternateFillColor</key>
+			<array>
+				<real>0.0</real>
+				<real>0.0</real>
+				<real>0.0</real>
+				<real>0.60270000000000001</real>
+			</array>
+			<key>glyphViewAlternateFillColor.dark</key>
+			<array>
+				<real>0.0</real>
+				<real>0.0</real>
+				<real>0.0</real>
+				<real>0.60270000000000001</real>
+			</array>
+			<key>glyphViewAnchorColor</key>
+			<array>
+				<real>1</real>
+				<real>0.0</real>
+				<real>0.0</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewAnchorColor.dark</key>
+			<array>
+				<real>1</real>
+				<real>0.0</real>
+				<real>0.0</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewAnchorTextColor</key>
+			<array>
+				<real>1</real>
+				<real>0.0</real>
+				<real>0.0</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewAnchorTextColor.dark</key>
+			<array>
+				<real>1</real>
+				<real>0.0</real>
+				<real>0.0</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewBackgroundColor</key>
+			<array>
+				<real>0.2107</real>
+				<real>0.2208</real>
+				<real>0.24829999999999999</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewBackgroundColor.dark</key>
+			<array>
+				<real>0.2107</real>
+				<real>0.2208</real>
+				<real>0.24829999999999999</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewBitmapColor</key>
+			<array>
+				<real>0.39029999999999998</real>
+				<real>0.39029999999999998</real>
+				<real>0.39029999999999998</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewBitmapColor.dark</key>
+			<array>
+				<real>0.39029999999999998</real>
+				<real>0.39029999999999998</real>
+				<real>0.39029999999999998</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewBluesColor</key>
+			<array>
+				<real>0.12540000000000001</real>
+				<real>0.98089999999999999</real>
+				<real>0.96930000000000005</real>
+				<real>0.1147</real>
+			</array>
+			<key>glyphViewBluesColor.dark</key>
+			<array>
+				<real>0.12540000000000001</real>
+				<real>0.98089999999999999</real>
+				<real>0.96930000000000005</real>
+				<real>0.1147</real>
+			</array>
+			<key>glyphViewComponentFillColor</key>
+			<array>
+				<real>0.1484</real>
+				<real>0.95379999999999998</real>
+				<real>0.69620000000000004</real>
+				<real>0.313</real>
+			</array>
+			<key>glyphViewComponentFillColor.dark</key>
+			<array>
+				<real>0.1484</real>
+				<real>0.95379999999999998</real>
+				<real>0.69620000000000004</real>
+				<real>0.313</real>
+			</array>
+			<key>glyphViewComponentInfoColor</key>
+			<array>
+				<real>1</real>
+				<real>1</real>
+				<real>1</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewComponentInfoColor.dark</key>
+			<array>
+				<real>1</real>
+				<real>1</real>
+				<real>1</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewComponentStrokeColor</key>
+			<array>
+				<real>0.0</real>
+				<real>0.028112696850393699</real>
+				<real>1</real>
+				<real>0.6860619288511749</real>
+			</array>
+			<key>glyphViewComponentStrokeColor.dark</key>
+			<array>
+				<real>0.0</real>
+				<real>0.028112696850393699</real>
+				<real>1</real>
+				<real>0.6860619288511749</real>
+			</array>
+			<key>glyphViewContourIndexColor</key>
+			<array>
+				<real>1</real>
+				<real>1</real>
+				<real>1</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewContourIndexColor.dark</key>
+			<array>
+				<real>1</real>
+				<real>1</real>
+				<real>1</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewCornerPointsFill</key>
+			<array>
+				<real>0.99000036716461182</real>
+				<real>0.47194594144821167</real>
+				<real>0.032503124326467514</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewCornerPointsFill.dark</key>
+			<array>
+				<real>0.99000036716461182</real>
+				<real>0.47194594144821167</real>
+				<real>0.032503124326467514</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewCornerPointsStroke</key>
+			<array>
+				<real>0.98688936233520508</real>
+				<real>0.17780773341655731</real>
+				<real>0.028479315340518951</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewCornerPointsStroke.dark</key>
+			<array>
+				<real>0.98688936233520508</real>
+				<real>0.17780773341655731</real>
+				<real>0.028479315340518951</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewCubicHandlesStrokeColor</key>
+			<array>
+				<real>0.0</real>
+				<real>0.0</real>
+				<real>0.0</real>
+				<real>0.21711814621409922</real>
+			</array>
+			<key>glyphViewCubicHandlesStrokeColor.dark</key>
+			<array>
+				<real>0.0</real>
+				<real>0.0</real>
+				<real>0.0</real>
+				<real>0.21711814621409922</real>
+			</array>
+			<key>glyphViewCurvePointsFill</key>
+			<array>
+				<real>0.0</real>
+				<real>0.75270000000000004</real>
+				<real>0.85629999999999995</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewCurvePointsFill.dark</key>
+			<array>
+				<real>0.0</real>
+				<real>0.75270000000000004</real>
+				<real>0.85629999999999995</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewCurvePointsStroke</key>
+			<array>
+				<real>0.49730000000000002</real>
+				<real>1</real>
+				<real>0.0</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewCurvePointsStroke.dark</key>
+			<array>
+				<real>0.49730000000000002</real>
+				<real>1</real>
+				<real>0.0</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewEchoStrokeColor</key>
+			<array>
+				<real>1</real>
+				<real>1</real>
+				<real>1</real>
+				<real>0.63280000000000003</real>
+			</array>
+			<key>glyphViewEchoStrokeColor.dark</key>
+			<array>
+				<real>1</real>
+				<real>1</real>
+				<real>1</real>
+				<real>0.63280000000000003</real>
+			</array>
+			<key>glyphViewFamilyBluesColor</key>
+			<array>
+				<real>0.1331</real>
+				<real>0.98160000000000003</real>
+				<real>0.93940000000000001</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewFamilyBluesColor.dark</key>
+			<array>
+				<real>0.1331</real>
+				<real>0.98160000000000003</real>
+				<real>0.93940000000000001</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewFillColor</key>
+			<array>
+				<real>0.0</real>
+				<real>0.0</real>
+				<real>0.0</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewFillColor.dark</key>
+			<array>
+				<real>0.0</real>
+				<real>0.0</real>
+				<real>0.0</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewFontMetricsStrokeColor</key>
+			<array>
+				<real>0.34777158498764038</real>
+				<real>0.35180646181106567</real>
+				<real>0.35172456502914429</real>
+				<real>0.5</real>
+			</array>
+			<key>glyphViewFontMetricsStrokeColor.dark</key>
+			<array>
+				<real>0.34777158498764038</real>
+				<real>0.35180646181106567</real>
+				<real>0.35172456502914429</real>
+				<real>0.5</real>
+			</array>
+			<key>glyphViewGlobalGuidesColor</key>
+			<array>
+				<real>0.92769999999999997</real>
+				<real>0.65869999999999995</real>
+				<real>0.99819999999999998</real>
+				<real>0.40000000000000002</real>
+			</array>
+			<key>glyphViewGlobalGuidesColor.dark</key>
+			<array>
+				<real>0.92769999999999997</real>
+				<real>0.65869999999999995</real>
+				<real>0.99819999999999998</real>
+				<real>0.40000000000000002</real>
+			</array>
+			<key>glyphViewGridColor</key>
+			<array>
+				<real>0.71870000000000001</real>
+				<real>0.71870000000000001</real>
+				<real>0.71870000000000001</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewGridColor.dark</key>
+			<array>
+				<real>0.71870000000000001</real>
+				<real>0.71870000000000001</real>
+				<real>0.71870000000000001</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewHandlesStrokeWidth</key>
+			<integer>2</integer>
+			<key>glyphViewImageInfoColor</key>
+			<array>
+				<real>0.0</real>
+				<real>0.0</real>
+				<real>0.0</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewImageInfoColor.dark</key>
+			<array>
+				<real>0.0</real>
+				<real>0.0</real>
+				<real>0.0</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewLocalGuidesColor</key>
+			<array>
+				<real>1</real>
+				<real>0.0</real>
+				<real>0.0</real>
+				<real>0.3986247859589041</real>
+			</array>
+			<key>glyphViewLocalGuidesColor.dark</key>
+			<array>
+				<real>1</real>
+				<real>0.0</real>
+				<real>0.0</real>
+				<real>0.3986247859589041</real>
+			</array>
+			<key>glyphViewMarginColor</key>
+			<array>
+				<real>0.10000000000000001</real>
+				<real>0.10000000000000001</real>
+				<real>0.10000000000000001</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewMarginColor.dark</key>
+			<array>
+				<real>0.10000000000000001</real>
+				<real>0.10000000000000001</real>
+				<real>0.10000000000000001</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewMeasurementsBackgroundColor</key>
+			<array>
+				<real>0.82450000000000001</real>
+				<real>0.875</real>
+				<real>1</real>
+				<real>0.1953</real>
+			</array>
+			<key>glyphViewMeasurementsBackgroundColor.dark</key>
+			<array>
+				<real>0.82450000000000001</real>
+				<real>0.875</real>
+				<real>1</real>
+				<real>0.1953</real>
+			</array>
+			<key>glyphViewMeasurementsForegroundColor</key>
+			<array>
+				<real>1</real>
+				<real>0.20000000000000001</real>
+				<real>1</real>
+				<real>0.73403843015665793</real>
+			</array>
+			<key>glyphViewMeasurementsForegroundColor.dark</key>
+			<array>
+				<real>1</real>
+				<real>0.20000000000000001</real>
+				<real>1</real>
+				<real>0.73403843015665793</real>
+			</array>
+			<key>glyphViewMeasurementsTextColor</key>
+			<array>
+				<real>0.90859999999999996</real>
+				<real>0.86299999999999999</real>
+				<real>1</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewMeasurementsTextColor.dark</key>
+			<array>
+				<real>0.90859999999999996</real>
+				<real>0.86299999999999999</real>
+				<real>1</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewMetricsTitlesColor</key>
+			<array>
+				<real>0.70630000000000004</real>
+				<real>0.70630000000000004</real>
+				<real>0.70630000000000004</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewMetricsTitlesColor.dark</key>
+			<array>
+				<real>0.70630000000000004</real>
+				<real>0.70630000000000004</real>
+				<real>0.70630000000000004</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewOffCurveCubicPointsStroke</key>
+			<array>
+				<real>1</real>
+				<real>0.66679999999999995</real>
+				<real>0.25729999999999997</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewOffCurveCubicPointsStroke.dark</key>
+			<array>
+				<real>1</real>
+				<real>0.66679999999999995</real>
+				<real>0.25729999999999997</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewOffCurvePointsFill</key>
+			<array>
+				<real>1</real>
+				<real>1</real>
+				<real>0.0</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewOffCurvePointsFill.dark</key>
+			<array>
+				<real>1</real>
+				<real>1</real>
+				<real>0.0</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewOffCurvePointsSize</key>
+			<real>2</real>
+			<key>glyphViewOffCurveQuadPointsStroke</key>
+			<array>
+				<real>1</real>
+				<real>0.0</real>
+				<real>0.0</real>
+				<real>0.80000000000000004</real>
+			</array>
+			<key>glyphViewOffCurveQuadPointsStroke.dark</key>
+			<array>
+				<real>1</real>
+				<real>0.0</real>
+				<real>0.0</real>
+				<real>0.80000000000000004</real>
+			</array>
+			<key>glyphViewOnCurvePointsSize</key>
+			<real>3</real>
+			<key>glyphViewOpenStartPointsArrowColor</key>
+			<array>
+				<real>1</real>
+				<real>0.0</real>
+				<real>0.0</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewOpenStartPointsArrowColor.dark</key>
+			<array>
+				<real>1</real>
+				<real>0.0</real>
+				<real>0.0</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewOutlineErrorsColor</key>
+			<array>
+				<real>0.20000000000000001</real>
+				<real>0.80000000000000004</real>
+				<real>1</real>
+				<real>0.80000000000000004</real>
+			</array>
+			<key>glyphViewOutlineErrorsColor.dark</key>
+			<array>
+				<real>0.20000000000000001</real>
+				<real>0.80000000000000004</real>
+				<real>1</real>
+				<real>0.80000000000000004</real>
+			</array>
+			<key>glyphViewPointCoordinateBackgroundColor</key>
+			<array>
+				<real>1</real>
+				<real>1</real>
+				<real>1</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewPointCoordinateBackgroundColor.dark</key>
+			<array>
+				<real>1</real>
+				<real>1</real>
+				<real>1</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewPointCoordinateColor</key>
+			<array>
+				<real>1</real>
+				<real>0.96550000000000002</real>
+				<real>0.6804</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewPointCoordinateColor.dark</key>
+			<array>
+				<real>1</real>
+				<real>0.96550000000000002</real>
+				<real>0.6804</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewPointIndexColor</key>
+			<array>
+				<real>1</real>
+				<real>1</real>
+				<real>1</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewPointIndexColor.dark</key>
+			<array>
+				<real>1</real>
+				<real>1</real>
+				<real>1</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewPreviewBackgroundColor</key>
+			<array>
+				<real>0.28189999999999998</real>
+				<real>0.28189999999999998</real>
+				<real>0.28189999999999998</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewPreviewBackgroundColor.dark</key>
+			<array>
+				<real>0.28189999999999998</real>
+				<real>0.28189999999999998</real>
+				<real>0.28189999999999998</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewPreviewFillColor</key>
+			<array>
+				<real>0.0</real>
+				<real>0.0</real>
+				<real>0.0</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewPreviewFillColor.dark</key>
+			<array>
+				<real>0.0</real>
+				<real>0.0</real>
+				<real>0.0</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewQuadraticHandlesStrokeColor</key>
+			<array>
+				<real>1</real>
+				<real>0.0</real>
+				<real>0.0</real>
+				<real>0.80000000000000004</real>
+			</array>
+			<key>glyphViewQuadraticHandlesStrokeColor.dark</key>
+			<array>
+				<real>1</real>
+				<real>0.0</real>
+				<real>0.0</real>
+				<real>0.80000000000000004</real>
+			</array>
+			<key>glyphViewSegmentIndexColor</key>
+			<array>
+				<real>1</real>
+				<real>1</real>
+				<real>1</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewSegmentIndexColor.dark</key>
+			<array>
+				<real>1</real>
+				<real>1</real>
+				<real>1</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewSelectionColor</key>
+			<array>
+				<real>0.060210458934307098</real>
+				<real>0.50684624910354614</real>
+				<real>0.99845898151397705</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewSelectionColor.dark</key>
+			<array>
+				<real>0.060210458934307098</real>
+				<real>0.50684624910354614</real>
+				<real>0.99845898151397705</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewSelectionMarqueColor</key>
+			<array>
+				<real>0.0</real>
+				<real>1</real>
+				<real>0.59999999999999998</real>
+				<real>0.076452349869451694</real>
+			</array>
+			<key>glyphViewSelectionMarqueColor.dark</key>
+			<array>
+				<real>0.0</real>
+				<real>1</real>
+				<real>0.59999999999999998</real>
+				<real>0.076452349869451694</real>
+			</array>
+			<key>glyphViewSelectionStrokeWidth</key>
+			<integer>3</integer>
+			<key>glyphViewSmoothPointStroke</key>
+			<array>
+				<real>0.091700000000000004</real>
+				<real>0.0</real>
+				<real>0.85629999999999995</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewSmoothPointStroke.dark</key>
+			<array>
+				<real>0.091700000000000004</real>
+				<real>0.0</real>
+				<real>0.85629999999999995</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewStartPointsArrowColor</key>
+			<array>
+				<real>1</real>
+				<real>0.0</real>
+				<real>0.74280000000000002</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewStartPointsArrowColor.dark</key>
+			<array>
+				<real>1</real>
+				<real>0.0</real>
+				<real>0.74280000000000002</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewStrokeColor</key>
+			<array>
+				<real>0.60370000000000001</real>
+				<real>0.71779999999999999</real>
+				<real>1</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewStrokeColor.dark</key>
+			<array>
+				<real>0.60370000000000001</real>
+				<real>0.71779999999999999</real>
+				<real>1</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewStrokeWidth</key>
+			<integer>1</integer>
+			<key>glyphViewTangentPointsFill</key>
+			<array>
+				<real>0.90339999999999998</real>
+				<real>0.59040000000000004</real>
+				<real>0.91010000000000002</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewTangentPointsFill.dark</key>
+			<array>
+				<real>0.90339999999999998</real>
+				<real>0.59040000000000004</real>
+				<real>0.91010000000000002</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewTangentPointsStroke</key>
+			<array>
+				<real>0.97670000000000001</real>
+				<real>0.0</real>
+				<real>0.94910000000000005</real>
+				<real>1</real>
+			</array>
+			<key>glyphViewTangentPointsStroke.dark</key>
+			<array>
+				<real>0.97670000000000001</real>
+				<real>0.0</real>
+				<real>0.94910000000000005</real>
+				<real>1</real>
+			</array>
+			<key>themeName</key>
+			<string>Dark Connor</string>
+			<key>themeType</key>
+			<string>User</string>
+		</dict>
 	</array>
 	<key>com.black-foundry.settingsReferenceViewer</key>
 	<array>
@@ -747,10 +1421,12 @@
 	<false/>
 	<key>com.letterror.designspaceEditor.recentDocumentPaths</key>
 	<array>
+		<string>/Users/manzanita/Repositories/ormsby-mono/OrmsbyMono.designspace</string>
 		<string>/Users/manzanita/Repositories/marlette/Marlette-Master.designspace</string>
+		<string>/Users/manzanita/Repositories/ormsby-mono/OrmsbyMonoItalic.designspace</string>
 	</array>
 	<key>com.letterror.designspaceEditor.showInstances</key>
-	<true/>
+	<false/>
 	<key>com.letterror.designspaceEditor.showSources</key>
 	<false/>
 	<key>com.letterror.designspaceEditor.singleLine</key>
@@ -758,7 +1434,7 @@
 	<key>com.mechanic.checkForUpdate</key>
 	<true/>
 	<key>com.mechanic.lastUpdateCheck</key>
-	<real>1726331595.4595089</real>
+	<real>1743295469.312042</real>
 	<key>com.mechanic.singleExtensionItems</key>
 	<array/>
 	<key>com.mechanic.urlstreams</key>
@@ -767,7 +1443,7 @@
 		<string>https://robofontmechanic.com/api/v2/registry.json</string>
 	</array>
 	<key>com.netzallee.glyphProcessor.rotation</key>
-	<real>180</real>
+	<integer>0</integer>
 	<key>com.ninastoessinger.word-o-mat.case</key>
 	<integer>3</integer>
 	<key>com.ninastoessinger.word-o-mat.limitToCharset</key>
@@ -853,7 +1529,7 @@
 		<key>glyphSettings</key>
 		<dict>
 			<key>mirroringOptions</key>
-			<integer>0</integer>
+			<integer>1</integer>
 			<key>offset</key>
 			<array>
 				<real>0.0</real>
@@ -864,6 +1540,21 @@
 		<array>
 			<integer>0</integer>
 		</array>
+	</dict>
+	<key>com.robofont.cornerTools.settings</key>
+	<dict>
+		<key>bottom</key>
+		<integer>5</integer>
+		<key>breadth</key>
+		<integer>30</integer>
+		<key>depth</key>
+		<integer>30</integer>
+		<key>mode</key>
+		<integer>0</integer>
+		<key>radius</key>
+		<integer>20</integer>
+		<key>roundness</key>
+		<real>1.25</real>
 	</dict>
 	<key>com.ryanbugden.editFontDimensions.identifiers</key>
 	<array>
@@ -919,6 +1610,185 @@
 		<key>upmOptionsRadios</key>
 		<integer>0</integer>
 	</dict>
+	<key>com.sharpType.accentPlacements</key>
+	<array>
+		<dict>
+			<key>extraX</key>
+			<integer>0</integer>
+			<key>extraY</key>
+			<integer>0</integer>
+			<key>horizontal</key>
+			<integer>1</integer>
+			<key>name</key>
+			<string>top</string>
+			<key>point</key>
+			<false/>
+			<key>vertical</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>extraX</key>
+			<integer>0</integer>
+			<key>extraY</key>
+			<integer>0</integer>
+			<key>horizontal</key>
+			<integer>1</integer>
+			<key>name</key>
+			<string>_top</string>
+			<key>point</key>
+			<false/>
+			<key>vertical</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>extraX</key>
+			<integer>0</integer>
+			<key>extraY</key>
+			<integer>0</integer>
+			<key>horizontal</key>
+			<integer>1</integer>
+			<key>name</key>
+			<string>bottom</string>
+			<key>point</key>
+			<false/>
+			<key>vertical</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>extraX</key>
+			<integer>0</integer>
+			<key>extraY</key>
+			<integer>0</integer>
+			<key>horizontal</key>
+			<integer>1</integer>
+			<key>name</key>
+			<string>_bottom</string>
+			<key>point</key>
+			<false/>
+			<key>vertical</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>extraX</key>
+			<integer>0</integer>
+			<key>extraY</key>
+			<integer>0</integer>
+			<key>horizontal</key>
+			<integer>2</integer>
+			<key>name</key>
+			<string>ogonek</string>
+			<key>point</key>
+			<true/>
+			<key>vertical</key>
+			<integer>2</integer>
+		</dict>
+		<dict>
+			<key>extraX</key>
+			<integer>0</integer>
+			<key>extraY</key>
+			<integer>0</integer>
+			<key>horizontal</key>
+			<integer>2</integer>
+			<key>name</key>
+			<string>_ogonek</string>
+			<key>point</key>
+			<true/>
+			<key>vertical</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>extraX</key>
+			<integer>20</integer>
+			<key>extraY</key>
+			<integer>0</integer>
+			<key>horizontal</key>
+			<integer>2</integer>
+			<key>name</key>
+			<string>topRight</string>
+			<key>point</key>
+			<false/>
+			<key>vertical</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>extraX</key>
+			<integer>0</integer>
+			<key>extraY</key>
+			<integer>0</integer>
+			<key>horizontal</key>
+			<integer>0</integer>
+			<key>name</key>
+			<string>_topRight</string>
+			<key>point</key>
+			<false/>
+			<key>vertical</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>extraX</key>
+			<integer>0</integer>
+			<key>extraY</key>
+			<integer>0</integer>
+			<key>horizontal</key>
+			<integer>1</integer>
+			<key>name</key>
+			<string>middle</string>
+			<key>point</key>
+			<false/>
+			<key>vertical</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>extraX</key>
+			<integer>0</integer>
+			<key>extraY</key>
+			<integer>0</integer>
+			<key>horizontal</key>
+			<integer>1</integer>
+			<key>name</key>
+			<string>_middle</string>
+			<key>point</key>
+			<false/>
+			<key>vertical</key>
+			<integer>1</integer>
+		</dict>
+		<dict>
+			<key>extraX</key>
+			<integer>0</integer>
+			<key>extraY</key>
+			<integer>0</integer>
+			<key>horizontal</key>
+			<integer>2</integer>
+			<key>name</key>
+			<string>horn</string>
+			<key>point</key>
+			<false/>
+			<key>vertical</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>extraX</key>
+			<integer>0</integer>
+			<key>extraY</key>
+			<integer>0</integer>
+			<key>horizontal</key>
+			<integer>1</integer>
+			<key>name</key>
+			<string>_horn</string>
+			<key>point</key>
+			<false/>
+			<key>vertical</key>
+			<integer>2</integer>
+		</dict>
+	</array>
+	<key>com.sharpType.verticalAccentPlacements</key>
+	<array>
+		<string>descender</string>
+		<string>0</string>
+		<string>xHeight</string>
+		<string>capHeight</string>
+		<string>ascender</string>
+	</array>
 	<key>com.typemytype.batch</key>
 	<dict>
 		<key>desktopFontGenerate_OTF</key>
@@ -950,6 +1820,8 @@
 		<integer>0</integer>
 		<key>batchSettingExportKeepFileNames</key>
 		<integer>0</integer>
+		<key>batchSettingStoreReport</key>
+		<integer>1</integer>
 		<key>batchSettingsForm_scrollView</key>
 		<dict>
 			<key>batchSettingExportDebug</key>
@@ -958,6 +1830,8 @@
 			<integer>0</integer>
 			<key>batchSettingExportKeepFileNames</key>
 			<integer>0</integer>
+			<key>batchSettingStoreReport</key>
+			<integer>1</integer>
 		</dict>
 		<key>desktopFontsAutohint</key>
 		<integer>0</integer>
@@ -1028,7 +1902,7 @@
 		<key>webFontsAutohint</key>
 		<integer>0</integer>
 		<key>webFontsDecompose</key>
-		<integer>0</integer>
+		<integer>1</integer>
 		<key>webFontsForm_scrollView</key>
 		<dict>
 			<key>ttfautohintAddTTFAutohintInfo</key>
@@ -1062,7 +1936,7 @@
 			<key>webFontsAutohint</key>
 			<integer>0</integer>
 			<key>webFontsDecompose</key>
-			<integer>0</integer>
+			<integer>1</integer>
 			<key>webFontsGenerateHTML</key>
 			<integer>0</integer>
 			<key>webFontsHtmlPreview</key>
@@ -1106,7 +1980,7 @@
 			<key>webFontsReleaseMode</key>
 			<integer>0</integer>
 			<key>webFontsRemoveOverlap</key>
-			<integer>0</integer>
+			<integer>1</integer>
 			<key>webFontsSuffix</key>
 			<string></string>
 		</dict>
@@ -1153,9 +2027,42 @@
 		<key>webFontsReleaseMode</key>
 		<integer>0</integer>
 		<key>webFontsRemoveOverlap</key>
-		<integer>0</integer>
+		<integer>1</integer>
 		<key>webFontsSuffix</key>
 		<string></string>
+	</dict>
+	<key>com.typemytype.outliner.v3</key>
+	<dict>
+		<key>applyToRadioButtons</key>
+		<integer>2</integer>
+		<key>endCapPopUpButton</key>
+		<integer>0</integer>
+		<key>lineJoinPopUpButton</key>
+		<integer>0</integer>
+		<key>miterLimitField</key>
+		<real>123.17116546630859</real>
+		<key>optimizeCurvesCheckbox</key>
+		<integer>0</integer>
+		<key>optimizeDoublePointsCheckbox</key>
+		<integer>1</integer>
+		<key>outputLayerField</key>
+		<string></string>
+		<key>outputStrokeLeftCheckbox</key>
+		<integer>1</integer>
+		<key>outputStrokeRightCheckbox</key>
+		<integer>1</integer>
+		<key>outputStrokeSourceCheckbox</key>
+		<integer>0</integer>
+		<key>preserveBoundsCheckbox</key>
+		<integer>0</integer>
+		<key>preserveComponentsCheckbox</key>
+		<integer>1</integer>
+		<key>strokeContrastAngleField</key>
+		<integer>0</integer>
+		<key>strokeContrastField</key>
+		<integer>0</integer>
+		<key>strokeWidthField</key>
+		<real>17.979902267456055</real>
 	</dict>
 	<key>com.typemytype.ramsaySt.data</key>
 	<dict>
@@ -1433,9 +2340,9 @@
 		<real>0.28079999999999999</real>
 	</array>
 	<key>com.typemytype.ramsaySt.showNeighbours</key>
-	<integer>1</integer>
+	<integer>0</integer>
 	<key>com.typemytype.ramsaySt.showPreview</key>
-	<integer>1</integer>
+	<integer>0</integer>
 	<key>com.typemytype.ramsaySt.strokeColor</key>
 	<array>
 		<real>0.0</real>
@@ -1445,42 +2352,42 @@
 	</array>
 	<key>com.typesupply.GlyphNanny2.colorInform</key>
 	<array>
-		<integer>0</integer>
-		<integer>0</integer>
+		<real>0.0</real>
+		<real>0.0</real>
 		<real>0.69999999999999996</real>
 		<real>0.29999999999999999</real>
 	</array>
 	<key>com.typesupply.GlyphNanny2.colorInsert</key>
 	<array>
-		<integer>0</integer>
-		<integer>1</integer>
-		<integer>0</integer>
+		<real>0.0</real>
+		<real>1</real>
+		<real>0.0</real>
 		<real>0.75</real>
 	</array>
 	<key>com.typesupply.GlyphNanny2.colorRemove</key>
 	<array>
-		<integer>1</integer>
-		<integer>0</integer>
-		<integer>0</integer>
+		<real>1</real>
+		<real>0.0</real>
+		<real>0.0</real>
 		<real>0.5</real>
 	</array>
 	<key>com.typesupply.GlyphNanny2.colorReview</key>
 	<array>
-		<integer>1</integer>
+		<real>1</real>
 		<real>0.69999999999999996</real>
-		<integer>0</integer>
+		<real>0.0</real>
 		<real>0.69999999999999996</real>
 	</array>
 	<key>com.typesupply.GlyphNanny2.displayLiveReport</key>
 	<false/>
 	<key>com.typesupply.GlyphNanny2.displayTitles</key>
-	<true/>
+	<integer>1</integer>
 	<key>com.typesupply.GlyphNanny2.lineWidthHighlight</key>
 	<integer>4</integer>
 	<key>com.typesupply.GlyphNanny2.lineWidthRegular</key>
 	<integer>1</integer>
 	<key>com.typesupply.GlyphNanny2.testDuringDrag</key>
-	<false/>
+	<integer>0</integer>
 	<key>com.typesupply.GlyphNanny2.testState.angleNearMiss</key>
 	<true/>
 	<key>com.typesupply.GlyphNanny2.testState.complexCurves</key>
@@ -1538,6 +2445,10 @@
 		<integer>1</integer>
 		<real>0.80000000000000004</real>
 	</array>
+	<key>com.typesupply.LaserMeasure.highlightAnimate</key>
+	<false/>
+	<key>com.typesupply.LaserMeasure.highlightAnimationDuration</key>
+	<integer>1</integer>
 	<key>com.typesupply.LaserMeasure.highlightOpacity</key>
 	<real>0.29999999999999999</real>
 	<key>com.typesupply.LaserMeasure.highlightStrokeWidth</key>
@@ -1589,7 +2500,22 @@
 	</array>
 	<key>com.typesupply.LaserMeasure.measurementTextSize</key>
 	<integer>12</integer>
+	<key>com.typesupply.LaserMeasure.persistentMeasurementsColor</key>
+	<array>
+		<real>0.75</real>
+		<real>0.75</real>
+		<real>0.75</real>
+		<integer>1</integer>
+	</array>
+	<key>com.typesupply.LaserMeasure.persistentMeasurementsOpacity</key>
+	<real>1</real>
+	<key>com.typesupply.LaserMeasure.persistentMeasurementsStrokeWidth</key>
+	<integer>15</integer>
+	<key>com.typesupply.LaserMeasure.showDistance</key>
+	<false/>
 	<key>com.typesupply.LaserMeasure.showMeasurementsHUD</key>
+	<true/>
+	<key>com.typesupply.LaserMeasure.showPersistentMeasurements</key>
 	<true/>
 	<key>com.typesupply.LaserMeasure.testAnchors</key>
 	<true/>
@@ -1609,14 +2535,275 @@
 	<true/>
 	<key>com.typesupply.LaserMeasure.triggerCharacter</key>
 	<string>d</string>
+	<key>com.typesupply.MM4.applicationFirstRun</key>
+	<integer>-1</integer>
+	<key>com.typesupply.MM4.contextStrings</key>
+	<array>
+		<dict>
+			<key>enabled</key>
+			<true/>
+			<key>leftPattern</key>
+			<dict>
+				<key>matches</key>
+				<string>any</string>
+				<key>rules</key>
+				<array>
+					<dict>
+						<key>comparison</key>
+						<string>is</string>
+						<key>type</key>
+						<string>unicodeCategory</string>
+						<key>value</key>
+						<string>Lu</string>
+					</dict>
+				</array>
+			</dict>
+			<key>longContext</key>
+			<array>
+				<string>H</string>
+				<string>H</string>
+				<string>$LEFT</string>
+				<string>$RIGHT</string>
+				<string>H</string>
+				<string>O</string>
+				<string>H</string>
+				<string>O</string>
+				<string>O</string>
+			</array>
+			<key>name</key>
+			<string>Uppercase, Uppercase</string>
+			<key>pseudoUnicodes</key>
+			<true/>
+			<key>rightPattern</key>
+			<dict>
+				<key>matches</key>
+				<string>any</string>
+				<key>rules</key>
+				<array>
+					<dict>
+						<key>comparison</key>
+						<string>is</string>
+						<key>type</key>
+						<string>unicodeCategory</string>
+						<key>value</key>
+						<string>Lu</string>
+					</dict>
+				</array>
+			</dict>
+			<key>shortContext</key>
+			<array>
+				<string>H</string>
+				<string>$LEFT</string>
+				<string>$RIGHT</string>
+				<string>H</string>
+			</array>
+			<key>suffixMatching</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>enabled</key>
+			<true/>
+			<key>leftPattern</key>
+			<dict>
+				<key>matches</key>
+				<string>any</string>
+				<key>rules</key>
+				<array>
+					<dict>
+						<key>comparison</key>
+						<string>is</string>
+						<key>type</key>
+						<string>unicodeCategory</string>
+						<key>value</key>
+						<string>Lu</string>
+					</dict>
+				</array>
+			</dict>
+			<key>longContext</key>
+			<array>
+				<string>$LEFT</string>
+				<string>$RIGHT</string>
+				<string>n</string>
+				<string>o</string>
+				<string>n</string>
+				<string>o</string>
+				<string>o</string>
+			</array>
+			<key>name</key>
+			<string>Uppercase, lowercase</string>
+			<key>pseudoUnicodes</key>
+			<true/>
+			<key>rightPattern</key>
+			<dict>
+				<key>matches</key>
+				<string>any</string>
+				<key>rules</key>
+				<array>
+					<dict>
+						<key>comparison</key>
+						<string>is</string>
+						<key>type</key>
+						<string>unicodeCategory</string>
+						<key>value</key>
+						<string>Ll</string>
+					</dict>
+				</array>
+			</dict>
+			<key>shortContext</key>
+			<array>
+				<string>n</string>
+				<string>$LEFT</string>
+				<string>$RIGHT</string>
+				<string>n</string>
+			</array>
+			<key>suffixMatching</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>enabled</key>
+			<true/>
+			<key>leftPattern</key>
+			<dict>
+				<key>matches</key>
+				<string>any</string>
+				<key>rules</key>
+				<array>
+					<dict>
+						<key>comparison</key>
+						<string>is</string>
+						<key>type</key>
+						<string>unicodeCategory</string>
+						<key>value</key>
+						<string>Ll</string>
+					</dict>
+				</array>
+			</dict>
+			<key>longContext</key>
+			<array>
+				<string>n</string>
+				<string>n</string>
+				<string>$LEFT</string>
+				<string>$RIGHT</string>
+				<string>n</string>
+				<string>o</string>
+				<string>n</string>
+				<string>o</string>
+				<string>o</string>
+			</array>
+			<key>name</key>
+			<string>lowercase, Uppercase</string>
+			<key>pseudoUnicodes</key>
+			<true/>
+			<key>rightPattern</key>
+			<dict>
+				<key>matches</key>
+				<string>any</string>
+				<key>rules</key>
+				<array>
+					<dict>
+						<key>comparison</key>
+						<string>is</string>
+						<key>type</key>
+						<string>unicodeCategory</string>
+						<key>value</key>
+						<string>Lu</string>
+					</dict>
+				</array>
+			</dict>
+			<key>shortContext</key>
+			<array>
+				<string>n</string>
+				<string>$LEFT</string>
+				<string>$RIGHT</string>
+				<string>n</string>
+			</array>
+			<key>suffixMatching</key>
+			<true/>
+		</dict>
+		<dict>
+			<key>enabled</key>
+			<true/>
+			<key>leftPattern</key>
+			<dict>
+				<key>matches</key>
+				<string>any</string>
+				<key>rules</key>
+				<array>
+					<dict>
+						<key>comparison</key>
+						<string>is</string>
+						<key>type</key>
+						<string>unicodeCategory</string>
+						<key>value</key>
+						<string>Ll</string>
+					</dict>
+				</array>
+			</dict>
+			<key>longContext</key>
+			<array>
+				<string>n</string>
+				<string>n</string>
+				<string>$LEFT</string>
+				<string>$RIGHT</string>
+				<string>n</string>
+				<string>o</string>
+				<string>n</string>
+				<string>o</string>
+				<string>o</string>
+			</array>
+			<key>name</key>
+			<string>lowercase, lowercase</string>
+			<key>pseudoUnicodes</key>
+			<true/>
+			<key>rightPattern</key>
+			<dict>
+				<key>matches</key>
+				<string>any</string>
+				<key>rules</key>
+				<array>
+					<dict>
+						<key>comparison</key>
+						<string>is</string>
+						<key>type</key>
+						<string>unicodeCategory</string>
+						<key>value</key>
+						<string>Ll</string>
+					</dict>
+				</array>
+			</dict>
+			<key>shortContext</key>
+			<array>
+				<string>n</string>
+				<string>$LEFT</string>
+				<string>$RIGHT</string>
+				<string>n</string>
+			</array>
+			<key>suffixMatching</key>
+			<true/>
+		</dict>
+	</array>
+	<key>com.typesupply.MM4.viewSettings.edit.singleFont.singlePair.glyphInfoVisibleByDefault</key>
+	<true/>
+	<key>com.typesupply.MM4.viewSettings.edit.singleFont.singlePair.groupPreviewVisibleByDefault</key>
+	<false/>
+	<key>com.typesupply.MM4.viewSettings.edit.singleFont.singlePair.groupStackVisibleByDefault</key>
+	<false/>
+	<key>com.typesupply.MM4.viewSettings.general.groupPreviewPointSize</key>
+	<integer>25</integer>
+	<key>com.typesupply.MM4.windowSettings.main.pairListOnLeft</key>
+	<true/>
+	<key>com.typesupply.MM4.windowSettings.main.pairListVisibleByDefault</key>
+	<true/>
+	<key>com.typesupply.MM4.windowSettings.main.typingPaneVisibleByDefault</key>
+	<true/>
 	<key>de.kutilek.curveEQ.curvature</key>
 	<integer>3</integer>
 	<key>de.kutilek.curveEQ.curvatureFree</key>
-	<real>0.5</real>
+	<real>0.61088054656982427</real>
 	<key>de.kutilek.curveEQ.debug</key>
 	<false/>
 	<key>de.kutilek.curveEQ.method</key>
-	<integer>3</integer>
+	<integer>2</integer>
 	<key>de.kutilek.curveEQ.tension</key>
 	<real>0.75</real>
 </dict>

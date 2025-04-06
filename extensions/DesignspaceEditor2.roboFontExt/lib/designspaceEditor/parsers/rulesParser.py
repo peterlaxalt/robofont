@@ -24,7 +24,12 @@ substitionRE = re.compile(r"([a-zA-Z0-9\.\*\+\-\:\^\|\~_]+)\s+\>\s+([a-zA-Z0-9\.
 conditionsRE = re.compile(r"([a-zA-Z]+)\s+([0-9\.]+)-([0-9\.]+)")
 
 
-def parseRules(text, ruleDescriptorClass):
+rulesLibKey = "com.letterror.designspaceEditor.rules.text"
+
+
+def parseRules(text, ruleDescriptorClass=None):
+    if ruleDescriptorClass is None:
+        ruleDescriptorClass = designspaceLib.RuleDescriptor
     rules = []
     for name, lines in getBlocks(text).items():
         rule = ruleDescriptorClass()
@@ -64,6 +69,39 @@ def dumpRules(rules, indent="    "):
     return "\n".join(text)
 
 
+def extractRules(operator, indent="    "):
+    """
+    Extract rules to a string for a given operator:
+    check if rules is stored as a string in the lib,
+    parse that stored string and compare with the internal rules.
+
+    Compare with ignore the rules order.
+
+    If there is no difference, use the string representation.
+
+    This will preseve comments and white space.
+    """
+    storedText = operator.lib.get(rulesLibKey, "")
+    parsed = parseRules(storedText)
+
+    if sorted([list(item.asdict().items()) for item in parsed]) == sorted([list(item.asdict().items()) for item in operator.rules]):
+        return storedText
+    return dumpRules(operator.rules, indent=indent)
+
+
+def storeRules(text, operator):
+    """
+    Store rules as objects from a string for a given operator and
+    store the rules string representation in the operator lib.
+    """
+    parsed = parseRules(text, operator.writerClass.ruleDescriptorClass)
+    operator.lib[rulesLibKey] = text
+    operator.rules.clear()
+    operator.rules.extend(parsed)
+
+
+# tests
+
 def test_parseRules():
     expected = """
 ruleName
@@ -74,53 +112,21 @@ ruleName
     width 100-300
 """
     result = parseRules(expected, designspaceLib.RuleDescriptor)
+    assert len(result) == 1
+    descriptor = result[0]
+    assert descriptor.name == "ruleName"
+    assert descriptor.subs == [("a", "a.alt"), ("agrave", "agrave.alt"), ("b", "b.alt")]
 
 
-# def test_dumpRules():
-#     glyphNames = ["a", "b", "c", "agrave", "b.alt", "ccedilla"]
-#     expected = "a b c agrave b.alt ccedilla"
-#     result = dumpRules(glyphNames)
-#     assert expected == result
+def test_Rules():
+    expected = [designspaceLib.RuleDescriptor(name="ruleName", subs=[("a", "a.alt")])]
+    result = dumpRules(expected)
+    rules = parseRules(result, designspaceLib.RuleDescriptor)
+    assert len(expected) == len(rules)
+    assert expected[0].name == rules[0].name
+    assert expected[0].subs == rules[0].subs
 
 
 if __name__ == '__main__':
     import pytest
     pytest.main([__file__])
-
-
-# ###
-
-# rulersText = """
-
-# # name of the rule
-# rule name
-#  # list of substitions
-#  a > b c > a.grave
-#  c > d
-#  # conditions
-#  wgth 800-1000
-#  wdth 300.3-300.5
-
-
-# rule name 2 with set
-#     a > b
-#     c > d
-
-#     # conditions set (multiple)
-#     wgth 800-1000 opsz 100-200
-#     wdth 300-350
-
-# """
-
-# document = designspaceLib.DesignSpaceDocument()
-
-# rules = parseRules(rulersText, document.writerClass.ruleDescriptorClass)
-# print(rules)
-# txt = dumpRules(rules)
-# print(txt)
-
-# rules2 = parseRules(txt, document.writerClass.ruleDescriptorClass)
-# print(rules2)
-# print(str(rules) == str(rules2))
-
-

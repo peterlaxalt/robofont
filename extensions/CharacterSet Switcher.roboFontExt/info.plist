@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>addToMenu</key>
+	<array>
+		<dict>
+			<key>nestInSubmenus</key>
+			<false/>
+			<key>path</key>
+			<string>tdCharsetsSwitcher.py</string>
+			<key>preferredName</key>
+			<string>Charsets Switcher</string>
+			<key>shortKey</key>
+			<string></string>
+		</dict>
+	</array>
+	<key>developer</key>
+	<string>Alexander Lubovenko</string>
+	<key>developerURL</key>
+	<string>https://github.com/typedev</string>
+	<key>html</key>
+	<false/>
+	<key>launchAtStartUp</key>
+	<integer>0</integer>
+	<key>mainScript</key>
+	<string></string>
+	<key>name</key>
+	<string>CharacterSet Switcher</string>
+	<key>requiresVersionMajor</key>
+	<string>3</string>
+	<key>requiresVersionMinor</key>
+	<string>4</string>
+	<key>timeStamp</key>
+	<real>1610267989.7424619</real>
+	<key>version</key>
+	<string>1.0</string>
+</dict>
+</plist>

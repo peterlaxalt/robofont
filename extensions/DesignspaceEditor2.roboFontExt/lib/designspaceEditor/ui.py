@@ -7,7 +7,7 @@ from objc import super
 import vanilla
 
 from fontTools import designspaceLib
-from ufoProcessor import ufoOperator
+from ufoProcessor import InstanceDescriptor, ufoOperator
 
 from mojo.UI import CodeEditor, SliderEditStepper
 from mojo.events import addObserver, removeObserver
@@ -26,11 +26,10 @@ from designspaceProblems import DesignSpaceChecker
 from designspaceEditor.designspaceLexer import DesignspaceLexer, TextLexer
 from designspaceEditor.parsers import mapParser, rulesParser, labelsParser, glyphNameParser, variableFontsParser
 from designspaceEditor.parsers.parserTools import numberToString
-from designspaceEditor.tools import holdRecursionDecorator, addToolTipForColumn, TryExcept, HoldChanges, symbolImage, NumberListFormatter, SendNotification, notificationConductor
+from designspaceEditor.tools import holdRecursionDecorator, addToolTipForColumn, TryExcept, HoldChanges, symbolImage, NumberListFormatter, SendNotification, notificationConductor, postScriptNameTransformer, styleMapNameTransformer, fileNameForInstance
 from designspaceEditor.locationPreview import LocationPreview
 from designspaceEditor.designspaceSubscribers import registerOperator, unregisterOperator
 from designspaceEditor import extensionIdentifier
-
 
 designspaceBundle = ExtensionBundle("DesignspaceEditor2")
 
@@ -72,6 +71,14 @@ except Exception:
 
 
 class DesignspaceEditorOperator(ufoOperator.UFOOperator):
+
+    ##### to be removed when RF get a updated ufoOperator
+    def sourceNameGenerator(self, prefix="source", count=1):
+        name = f"{prefix}.{count}"
+        for sourceDescriptor in self.sources:
+            if sourceDescriptor.name == name:
+                return self.sourceNameGenerator(prefix=prefix, count=count + 1)
+        return name
 
     def _instantiateFont(self, path):
         for font in AllFonts():
@@ -132,7 +139,9 @@ class DesignspaceEditorOperator(ufoOperator.UFOOperator):
             self.instances.remove(instanceDescriptor)
 
     def addInstanceDescriptor(self, **kwargs):
-        if "familyName" not in kwargs:
+        familyName = kwargs.get("familyName")
+        styleName = kwargs.get("styleName")
+        if familyName is None:
             if self.instances:
                 familyName = self.instances[0].familyName
             elif self.sources:
@@ -140,15 +149,70 @@ class DesignspaceEditorOperator(ufoOperator.UFOOperator):
             else:
                 familyName = "NewFamily"
             kwargs["familyName"] = familyName
-        if "styleName" not in kwargs:
-            kwargs["styleName"] = f"Style_{len(self.instances)}"
+        if styleName is None:
+            styleName = kwargs["styleName"] = f"Style_{len(self.instances)}"
+
         if "filename" not in kwargs:
-            kwargs["filename"] = os.path.join(getExtensionDefault('instanceFolderName', 'instances'), f"{kwargs['familyName'] }-{kwargs['styleName']}.ufo")
+            filename = postScriptNameTransformer(kwargs["familyName"], kwargs["styleName"])
+            kwargs["filename"] = os.path.join(getExtensionDefault('instanceFolderName', 'instances'), f"{filename}.ufo")
+        if "name" not in kwargs:
+            kwargs["name"] = f"instance.{len(self.instances)}"
 
         with SendNotification("Instances", action="AddInstance", designspace=self) as notification:
             instanceDescriptor = super().addInstanceDescriptor(**kwargs)
             notification["instance"] = instanceDescriptor
         return instanceDescriptor
+
+    # rules
+
+    def addRule(self, ruleDescriptor):
+        with SendNotification("Rules", action="AddRule", designspace=self) as notification:
+            super().addRule(ruleDescriptor)
+            notification["rule"] = ruleDescriptor
+
+    def removeRule(self, ruleDescriptor):
+        with SendNotification("Rules", action="RemoveRule", designspace=self, instance=ruleDescriptor):
+            self.rules.remove(ruleDescriptor)
+
+    def addRuleDescriptor(self, **kwargs):
+        with SendNotification("Rules", action="AddRule", designspace=self) as notification:
+            ruleDescriptor = super().addRuleDescriptor(**kwargs)
+            notification["rule"] = ruleDescriptor
+        return ruleDescriptor
+
+    # location labels
+
+    def addLocationLabel(self, locationLabelDescriptor):
+        with SendNotification("LocationLabel", action="addLocationLabel", designspace=self) as notification:
+            super().addLocationLabel(locationLabelDescriptor)
+            notification["locationLabel"] = locationLabelDescriptor
+
+    def removeLocationLabel(self, locationLabelDescriptor):
+        with SendNotification("LocationLabel", action="removeLocationLabel", designspace=self, instance=locationLabelDescriptor):
+            self.locationLabels.remove(locationLabelDescriptor)
+
+    def addLocationLabelDescriptor(self, **kwargs):
+        with SendNotification("LocationLabel", action="addLocationLabel", designspace=self) as notification:
+            locationLabelDescriptor = super().addLocationLabelDescriptor(**kwargs)
+            notification["locationLabel"] = locationLabelDescriptor
+        return locationLabelDescriptor
+
+    # variable font
+
+    def addVariableFont(self, variableFontDescriptor):
+        with SendNotification("VariableFonts", action="AddVariableFont", designspace=self) as notification:
+            super().addVariableFont(variableFontDescriptor)
+            notification["variableFont"] = variableFontDescriptor
+
+    def removeVariableFont(self, variableFontDescriptor):
+        with SendNotification("VariableFonts", action="RemoveVariableFont", designspace=self, instance=variableFontDescriptor):
+            self.variableFonts.remove(variableFontDescriptor)
+
+    def addVariableFontDescriptor(self, **kwargs):
+        with SendNotification("VariableFonts", action="AddVariableFont", designspace=self) as notification:
+            variableFontDescriptor = super().addVariableFontDescriptor(**kwargs)
+            notification["variableFont"] = variableFontDescriptor
+        return variableFontDescriptor
 
     def openInterface(self):
         for controller in AllDesignspaceWindows():
@@ -231,7 +295,10 @@ class DesignspaceEditorOperator(ufoOperator.UFOOperator):
         )
 
     def getPreviewLocation(self):
-        return self.lib.get(self.previewLocationLibKey)
+        location = self.lib.get(self.previewLocationLibKey)
+        if location is None:
+            location = self.newDefaultLocation(bend=True)
+        return location
 
     def setPreviewLocation(self, location):
         if location is None:
@@ -249,7 +316,11 @@ class GenerateInstanceSheet:
         # update the path attribute in all given instanceDescriptors
         for item in instances:
             instanceDescriptor = item["object"]
-            instanceDescriptor.path = os.path.abspath(os.path.join(os.path.dirname(self.operator.path), instanceDescriptor.filename))
+            # filename could be None
+            filename = instanceDescriptor.filename
+            if filename is None:
+                filename = fileNameForInstance(instanceDescriptor)
+            instanceDescriptor.path = os.path.abspath(os.path.join(os.path.dirname(self.operator.path), filename))
 
         self.instances = instances
         self.w = vanilla.Sheet((350, 140), parentWindow=parentWindow)
@@ -299,7 +370,7 @@ class GenerateInstanceSheet:
 
                 font.save(path=fontPath)
             except Exception as e:
-                print(f"Failed to generate isntance: {e}")
+                print(f"Failed to generate instance: {e}")
 
         self.operator.useVarlib = prereserveuseVarlib
         self.operator.roundGeometry = prereserveRoundGeometry
@@ -558,16 +629,60 @@ class InstancesAttributesPopover(BaseAttributePopover):
     def build(self, item):
         """
         support:
+            * postScriptFontName
+            * styleMapFamilyName
+            * styleMapStyleName
             * localisedFamilyName
             * localisedStyleName
         """
+        # Create the instancesDescriptor attribute
         self.instancesDescriptor = item["object"]
 
-        self.popover.tabs = vanilla.Tabs((0, 15, -0, -0), ["Localised Family Name", "Localised Style Name"])
+        # Create the popover tabs
+        self.popover.tabs = vanilla.Tabs((0, 15, -0, -0), ["Additional Names", "Localised Family Name", "Localised Style Name"])
 
-        self.instanceLocalisedFamilyName = self.popover.tabs[0]
-        self.instanceLocalisedStyleName = self.popover.tabs[1]
+        # Assign the tabs to variables for easier access
+        self.instanceStyleMapNames = self.popover.tabs[0]
+        self.instanceLocalisedFamilyName = self.popover.tabs[1]
+        self.instanceLocalisedStyleName = self.popover.tabs[2]
 
+        # Create the container for the Style Map tab
+        self.instanceStyleMapNames.container = vanilla.Box((10, 10, -10, -10))
+        self.styleMapStyleOptions = ["regular", "italic", "bold", "bold italic"]
+
+        col1 = 10
+        col2 = 180
+        padding = 24
+        y = 10
+
+        wand = symbolImage("wand.and.stars", "primary")
+
+        # Create the text box and edit box for identifier Name
+        # self.instanceStyleMapNames.container.identifierNameLabel = vanilla.TextBox((col1, y, col2-padding, 22), "Identifying Name:", alignment="right")
+        # self.instanceStyleMapNames.container.identifierNameTextBox = vanilla.EditText((col2, y, -40, 22), "", callback=self.controlEditCallback)
+        # self.instanceStyleMapNames.container.identifierNameAutoBtn = vanilla.ImageButton((-32, y, -10, 22), imageObject=wand, bordered=False, callback=self.autoIdentifyingNameCallback)
+        # y += 42
+
+        # Create the text box and edit box for PostScript Font Name
+        self.instanceStyleMapNames.container.postScriptFontNameLabel = vanilla.TextBox((col1, y, col2-padding, 22), "PostScript Name:", alignment="right")
+        self.instanceStyleMapNames.container.postScriptFontNameTextBox = vanilla.EditText((col2, y, -40, 22), "", callback=self.controlEditCallback)
+        self.instanceStyleMapNames.container.postScriptFontNameAutoBtn = vanilla.ImageButton((-32, y, -10, 22), imageObject=wand, bordered=False, callback=self.autoPostScriptNameCallback)
+        y += 42
+
+        # Create the text box and edit box for Style Map Family Name
+        self.instanceStyleMapNames.container.styleMapFamilyNameLabel = vanilla.TextBox((col1, y, col2-padding, 22), "Style Map Family Name:", alignment="right")
+        self.instanceStyleMapNames.container.styleMapFamilyNameTextBox = vanilla.EditText((col2, y, -40, 22), "", callback=self.controlEditCallback)
+        self.instanceStyleMapNames.container.styleMapFamilyNameAutoBtn = vanilla.ImageButton((-32, y, -10, 22), imageObject=wand, bordered=False, callback=self.autoStyleMapNamesCallback)
+        y += 30
+
+        # Create the text box and radio group for Style Map Style Name
+        self.instanceStyleMapNames.container.styleMapStyleNameLabel = vanilla.TextBox((col1, y, col2-padding, 22), "Style Map Style Name:", alignment="right")
+        self.instanceStyleMapNames.container.styleMapStyleNameRadio = vanilla.RadioGroup((col2, y, -10, 88), ["Regular", "Italic", "Bold", "Bold Italic"], callback=self.controlEditCallback)
+        self.instanceStyleMapNames.container.styleMapStyleNameRadio.getNSMatrix().setAllowsEmptySelection_(True)
+
+        # self.instanceStyleMapNames.container.helpButton = vanilla.HelpButton((-32, -32, -10, 22), callback=self.instancesHelpCallback)
+
+        # Create the CodeEditor for Localised Family Name
         self.instanceLocalisedFamilyName.editor = CodeEditor(
             (10, 10, -10, -10),
             labelsParser.dumpAxisLabels(self.instancesDescriptor.localisedFamilyName, []),
@@ -576,6 +691,7 @@ class InstancesAttributesPopover(BaseAttributePopover):
             callback=self.controlEditCallback
         )
 
+        # Create the CodeEditor for Localised Style Name
         self.instanceLocalisedStyleName.editor = CodeEditor(
             (10, 10, -10, -10),
             labelsParser.dumpAxisLabels(self.instancesDescriptor.localisedStyleName, []),
@@ -584,11 +700,74 @@ class InstancesAttributesPopover(BaseAttributePopover):
             callback=self.controlEditCallback
         )
 
+        # Set the initial value for identifier name
+        # self.instanceStyleMapNames.container.identifierNameTextBox.set(self.instancesDescriptor.name)
+
+        # Set the initial value for PostScript Font Name
+        self.instanceStyleMapNames.container.postScriptFontNameTextBox.set(self.instancesDescriptor.postScriptFontName)
+
+        # Set the initial values for Style Map Family Name and Style Map Style Name
+        self.instanceStyleMapNames.container.styleMapFamilyNameTextBox.set(self.instancesDescriptor.styleMapFamilyName)
+
+        if self.instancesDescriptor.styleMapStyleName not in self.styleMapStyleOptions:
+            self.instanceStyleMapNames.container.styleMapStyleNameRadio.set(-1)
+        else:
+            styleMapStyleNameIndex = self.styleMapStyleOptions.index(self.instancesDescriptor.styleMapStyleName)
+            self.instanceStyleMapNames.container.styleMapStyleNameRadio.set(styleMapStyleNameIndex)
+
     def close(self):
+        # Update the name attribute based on the identifierNameTextBox value
+        # self.instancesDescriptor.name = self.instanceStyleMapNames.container.identifierNameTextBox.get() or None
+
+        # Update the postScriptFontName attribute based on the postScriptFontNameTextBox value
+        self.instancesDescriptor.postScriptFontName = self.instanceStyleMapNames.container.postScriptFontNameTextBox.get() or None
+
+        # Update the styleMapFamilyName attribute based on the styleMapFamilyNameTextBox value, or if it's not set, set to None
+        self.instancesDescriptor.styleMapFamilyName = self.instanceStyleMapNames.container.styleMapFamilyNameTextBox.get() or None
+
+        # Update the styleMapStyleName attribute based on the styleMapStyleNameRadio value, or if it's not set, set to None
+        styleMapStyleNameIndex = self.instanceStyleMapNames.container.styleMapStyleNameRadio.get()
+        self.instancesDescriptor.styleMapStyleName = self.styleMapStyleOptions[styleMapStyleNameIndex] if styleMapStyleNameIndex > -1 else None
+
+        # Parse the axis labels from the instanceLocalisedFamilyName editor and update the localisedFamilyName attribute
         familyNamelabels, _ = labelsParser.parseAxisLabels(self.instanceLocalisedFamilyName.editor.get())
         self.instancesDescriptor.localisedFamilyName = familyNamelabels
+
+        # Parse the axis labels from the instanceLocalisedStyleName editor and update the localisedStyleName attribute
         styleNamelabels, _ = labelsParser.parseAxisLabels(self.instanceLocalisedStyleName.editor.get())
         self.instancesDescriptor.localisedStyleName = styleNamelabels
+
+    # def instancesHelpCallback(self, sender):
+    #     # TODO: Doesn't quite work 100% of the time? Crashes if you click it too much
+    #     designspaceBundle.developerURL = "https://fonttools.readthedocs.io/en/latest/designspaceLib/xml.html#instance-element"
+    #     designspaceBundle.developer = "Documentation"
+
+    #     helpWindow = designspaceBundle.openHelp()
+    #     helpWindow.visitButton.setTitle_(" Open on Browser ")
+    #     helpWindow.visitButton.sizeToFit()
+
+    #     visitButtonToolbarItem = helpWindow.w.getToolbarItems()["developerURL"]
+    #     visitButtonToolbarItem.setMinSize_(helpWindow.visitButton.frame().size)
+    #     visitButtonToolbarItem.setMaxSize_(helpWindow.visitButton.frame().size)
+
+    # def autoIdentifyingNameCallback(self, sender):
+    #     # Set the identifierNameTextBox value to the name attribute
+    #     self.instancesDescriptor.name = identifyingNameTransformer(self.instancesDescriptor.familyName, self.instancesDescriptor.styleName)
+    #     self.instanceStyleMapNames.container.identifierNameTextBox.set(self.instancesDescriptor.name)
+
+    def autoPostScriptNameCallback(self, sender):
+        # Set the postScriptFontNameTextBox value to the postScriptFontName attribute
+        self.instancesDescriptor.postScriptFontName = postScriptNameTransformer(self.instancesDescriptor.familyName, self.instancesDescriptor.styleName)
+        self.instanceStyleMapNames.container.postScriptFontNameTextBox.set(self.instancesDescriptor.postScriptFontName)
+
+    def autoStyleMapNamesCallback(self, sender):
+        # Set the styleMapFamilyNameTextBox value to the styleMapFamilyName attribute
+
+        self.instancesDescriptor.styleMapFamilyName, self.instancesDescriptor.styleMapStyleName = styleMapNameTransformer(self.instancesDescriptor.familyName, self.instancesDescriptor.styleName)
+
+        self.instanceStyleMapNames.container.styleMapFamilyNameTextBox.set(self.instancesDescriptor.styleMapFamilyName)
+        styleMapStyleNameIndex = self.styleMapStyleOptions.index(self.instancesDescriptor.styleMapStyleName)
+        self.instanceStyleMapNames.container.styleMapStyleNameRadio.set(styleMapStyleNameIndex)
 
 
 class BaseButtonPopover:
@@ -768,9 +947,33 @@ class DesignspaceEditorController(Subscriber, WindowController, BaseNotification
             visibleByDefault=tabItem not in ["Notes"],
         ) for tabItem in self.tabItems]
 
-        toolbarItems.extend([
-            dict(itemIdentifier=AppKit.NSToolbarSpaceItemIdentifier),
+        other_extensions = []
+        if self.hasPreplatorSupport:
+            other_extensions.append(
+                dict(
+                    itemIdentifier="prepolator",
+                    label="Prepolator",
+                    callback=self.toolbarPrepolator,
+                    imageObject=symbolImage("atom", (1, 0, 1, 1))
+                    )
+                )
+        if self.hasBatchSupport:
+            other_extensions.append(
+                dict(
+                    itemIdentifier="batch",
+                    label="Batch",
+                    callback=self.toolbarBatch,
+                    imageObject=symbolImage("arrow.right.filled.filter.arrow.right", (1, 0, 1, 1))
+                    )
+                )
+        if other_extensions:
+            toolbarItems.append(dict(itemIdentifier=AppKit.NSToolbarSpaceItemIdentifier))
 
+        toolbarItems.extend(other_extensions)
+
+        toolbarItems.extend([
+            dict(itemIdentifier=AppKit.NSToolbarSpaceItemIdentifier,
+            ),
             dict(
                 itemIdentifier="preview",
                 label="Preview",
@@ -805,6 +1008,13 @@ class DesignspaceEditorController(Subscriber, WindowController, BaseNotification
             # ),
         ])
         self.w.addToolbar("DesignSpaceToolbar", toolbarItems, addStandardItems=False)
+
+        items = self.w.getToolbarItems()
+        if "batch" in items:
+            items["batch"].setVisibilityPriority_(AppKit.NSToolbarItemVisibilityPriorityLow)
+        if "prepolator" in items:
+            items["prepolator"].setVisibilityPriority_(AppKit.NSToolbarItemVisibilityPriorityLow)
+
 
         # AXES
         axesToolsSsegmentDescriptions = [
@@ -959,7 +1169,9 @@ class DesignspaceEditorController(Subscriber, WindowController, BaseNotification
             dict(title="UFO", key="instanceUFOFileName", width=200, minWidth=100, maxWidth=350, editable=False, formatter=PathFormatter.alloc().init()),
             dict(title="Family Name", key="instanceFamilyName", editable=True, width=130, minWidth=130, maxWidth=250),
             dict(title="Style Name", key="instanceStyleName", editable=True, width=130, minWidth=130, maxWidth=250),
-            dict(title="PostScript Name", key="instancePostscriptFontName", editable=True, width=130, minWidth=130, maxWidth=250),
+            # dict(title="PostScript Name", key="instancePostscriptFontName", editable=True, width=130, minWidth=130, maxWidth=250),
+            dict(title="🏷️", key="instanceHasAdditionalNames", width=20, allowsSorting=False, editable=False),
+            dict(title="🌐", key="instanceHasLocalisedFamilyNames", width=20, allowsSorting=False, editable=False),
             dict(title="📍", key="instanceLocation", editable=False, width=20)
         ]
 
@@ -974,7 +1186,11 @@ class DesignspaceEditorController(Subscriber, WindowController, BaseNotification
             dragSettings=dict(type="sourcesListDragAndDropType", callback=self.dragCallback),
             selfDropSettings=dict(type="sourcesListDragAndDropType", operation=AppKit.NSDragOperationMove, callback=self.dropCallback),
         )
+        addToolTipForColumn(self.sources.list, "genericInfoButton", "Double click to edit additional instance info")
+        addToolTipForColumn(self.instances.list, "instanceHasAdditionalNames", "Instance has additional names")
+        addToolTipForColumn(self.instances.list, "instanceHasLocalisedFamilyNames", "Instance has localised family and/or style names")
         addToolTipForColumn(self.instances.list, "instanceLocation", "Indicate if the location of the instance is a user location or a design location.")
+
         self.instances.list.designspaceContent = "instances"
 
         # RULES
@@ -1065,11 +1281,27 @@ class DesignspaceEditorController(Subscriber, WindowController, BaseNotification
             self.axes.list.set([AxisListItem(axisDescriptor, self) for axisDescriptor in self.operator.axes])
             self.sources.list.set([self.wrapSourceDescriptor(sourceDescriptor) for sourceDescriptor in self.operator.sources])
             self.instances.list.set([self.wrapInstanceDescriptor(instanceDescriptor) for instanceDescriptor in self.operator.instances])
-            self.rules.editor.set(rulesParser.dumpRules(self.operator.rules))
-            self.locationLabels.editor.set(labelsParser.dumpLocationLabels(self.operator.locationLabels))
-            self.variableFonts.editor.set(variableFontsParser.dumpVariableFonts(self.operator.variableFonts))
+            self.rules.editor.set(rulesParser.extractRules(self.operator))
+            self.locationLabels.editor.set(labelsParser.extractLocationLabels(self.operator))
+            self.variableFonts.editor.set(variableFontsParser.extractVariableFonts(self.operator))
             self.notes.editor.set(self.operator.lib.get(designspacenotesLibKey, ""))
             self.updateColumnHeadersFromAxes()
+
+    @property
+    def hasPreplatorSupport(self):    
+        try:
+            import prepolator
+            return True
+        except ImportError:
+            return False
+
+    @property
+    def hasBatchSupport(self):
+        try:
+            import batch
+            return True
+        except ImportError:
+            return False
 
     # AXES
 
@@ -1136,7 +1368,7 @@ class DesignspaceEditorController(Subscriber, WindowController, BaseNotification
             for path in paths:
                 self.addSourceFromPath(path)
 
-        #with self.holdChanges:
+        # with self.holdChanges:
         value = sender.get()
         if value == 0:
             # add
@@ -1211,7 +1443,7 @@ class DesignspaceEditorController(Subscriber, WindowController, BaseNotification
         sourceDescriptor = self.operator.addSourceDescriptor(
             path=font.path,
             filename=filename,
-            name=f"source.{len(self.operator.sources) + 1}",
+            name=self.operator.sourceNameGenerator(),
             familyName=font.info.familyName,
             styleName=font.info.styleName,
             location=defaultLocation
@@ -1307,11 +1539,15 @@ class DesignspaceEditorController(Subscriber, WindowController, BaseNotification
         self.instancesChanged()
 
     def wrapInstanceDescriptor(self, instanceDescriptor):
+        filename = postScriptNameTransformer(instanceDescriptor.familyName, instanceDescriptor.styleName)
         wrapped = dict(
-            instanceUFOFileName=instanceDescriptor.filename if instanceDescriptor.filename is not None else os.path.join(getExtensionDefault('instanceFolderName', 'instances'), f"{instanceDescriptor.familyName}-{instanceDescriptor.styleName}.ufo"),
+            instanceUFOFileName=instanceDescriptor.filename if instanceDescriptor.filename is not None else os.path.join(getExtensionDefault('instanceFolderName', 'instances'), f"{filename}.ufo"),
             instanceFamilyName=instanceDescriptor.familyName or "",
             instanceStyleName=instanceDescriptor.styleName or "",
-            instancePostscriptFontName=instanceDescriptor.postScriptFontName or "",
+            # instancePostscriptFontName=instanceDescriptor.postScriptFontName or "",
+            instanceHasAdditionalNames=dotSymbol if any((instanceDescriptor.postScriptFontName, instanceDescriptor.styleMapFamilyName, instanceDescriptor.styleMapStyleName)) else "",
+            instanceHasLocalisedFamilyNames=dotSymbol if any((instanceDescriptor.localisedFamilyName, instanceDescriptor.localisedStyleName)) else "",
+
             instanceLocation="✏️" if instanceDescriptor.designLocation else "👤",
             object=instanceDescriptor
         )
@@ -1324,7 +1560,7 @@ class DesignspaceEditorController(Subscriber, WindowController, BaseNotification
         instanceDescriptor = wrappedInstanceDescriptor["object"]
         instanceDescriptor.familyName = wrappedInstanceDescriptor["instanceFamilyName"] if wrappedInstanceDescriptor.get("instanceFamilyName") else None
         instanceDescriptor.styleName = wrappedInstanceDescriptor["instanceStyleName"] if wrappedInstanceDescriptor.get("instanceStyleName") else None
-        instanceDescriptor.postScriptFontName = wrappedInstanceDescriptor["instancePostscriptFontName"] if wrappedInstanceDescriptor.get("instancePostscriptFontName") else None
+        # instanceDescriptor.postScriptFontName = wrappedInstanceDescriptor["instancePostscriptFontName"] if wrappedInstanceDescriptor.get("instancePostscriptFontName") else None
         # update locations
         location = instanceDescriptor.designLocation or instanceDescriptor.userLocation
         for axis in self.operator.axes:
@@ -1355,11 +1591,12 @@ class DesignspaceEditorController(Subscriber, WindowController, BaseNotification
             existingLocations = [instanceDescriptor.getFullDesignLocation(self.operator) for instanceDescriptor in self.operator.instances]
             for sourceDescriptor in self.operator.sources:
                 if sourceDescriptor.location not in existingLocations:
+                    fileName = postScriptNameTransformer(sourceDescriptor.familyName, sourceDescriptor.styleName)
                     self.operator.addInstanceDescriptor(
                         familyName=sourceDescriptor.familyName,
                         styleName=sourceDescriptor.styleName,
                         designLocation=sourceDescriptor.location,
-                        filename=os.path.join(getExtensionDefault('instanceFolderName', 'instances'), f"{sourceDescriptor.familyName}-{sourceDescriptor.styleName}.ufo")
+                        filename=os.path.join(getExtensionDefault('instanceFolderName', 'instances'), f"{fileName}.ufo")
                     )
 
     def instancesEditorGenerateToolsCallback(self, sender):
@@ -1379,6 +1616,7 @@ class DesignspaceEditorController(Subscriber, WindowController, BaseNotification
             return
         for wrappedInstanceDescriptor in sender:
             self.unwrapInstanceDescriptor(wrappedInstanceDescriptor)
+        self.operator.instances[:] = [item["object"] for item in sender]
         self.instancesChanged()
 
     def instancesListSelectionCallback(self, sender):
@@ -1388,13 +1626,17 @@ class DesignspaceEditorController(Subscriber, WindowController, BaseNotification
     def instancesChanged(self):
         self.setDocumentNeedSave(True, who="Instances")
 
+    @holdRecursionDecorator
+    def updateInstances(self):
+        with self.holdChanges:
+            for item in self.instances.list:
+                instanceDescriptor = self.unwrapInstanceDescriptor(item)
+                item.update(self.wrapInstanceDescriptor(instanceDescriptor))
     # rules
 
     @coalescingDecorator(delay=0.2)
     def rulesEditorCallback(self, sender):
-        rules = rulesParser.parseRules(sender.get(), self.operator.writerClass.ruleDescriptorClass)
-        self.operator.rules.clear()
-        self.operator.rules.extend(rules)
+        rulesParser.storeRules(sender.get(), self.operator)
         self.setDocumentNeedSave(True, who="Rules")
 
     # labels
@@ -1412,9 +1654,7 @@ class DesignspaceEditorController(Subscriber, WindowController, BaseNotification
 
     @coalescingDecorator(delay=0.2)
     def locationLabelsEditorCallback(self, sender):
-        locationLabels = labelsParser.parseLocationLabels(sender.get(), self.operator.writerClass.locationLabelDescriptorClass)
-        self.operator.locationLabels.clear()
-        self.operator.locationLabels.extend(locationLabels)
+        labelsParser.storeLocationLabels(sender.get(), self.operator)
         self.setDocumentNeedSave(True, who="LocationLabels")
 
     # variable fonts
@@ -1442,9 +1682,7 @@ class DesignspaceEditorController(Subscriber, WindowController, BaseNotification
 
     @coalescingDecorator(delay=0.2)
     def variableFontsEditorCallback(self, sender):
-        variableFonts = variableFontsParser.parseVariableFonts(sender.get(), self.operator.writerClass.variableFontDescriptorClass)
-        self.operator.variableFonts.clear()
-        self.operator.variableFonts.extend(variableFonts)
+        variableFontsParser.storeVariableFonts(sender.get(), self.operator)
         self.setDocumentNeedSave(True, who="VariableFonts")
 
     # problems
@@ -1538,7 +1776,6 @@ class DesignspaceEditorController(Subscriber, WindowController, BaseNotification
         def menuSetPreviewToSelectionCallback(menuItem):
             selectedObject = selectedItems[0]['object']
             selectedDesignLocation = selectedObject.getFullDesignLocation(self.operator)
-            print('menuSetPreviewToSelectionCallback setting location to', selectedDesignLocation)
             self.operator.setPreviewLocation(selectedDesignLocation)
 
         def newInstanceBetween(menuItem):
@@ -1559,32 +1796,31 @@ class DesignspaceEditorController(Subscriber, WindowController, BaseNotification
                 location[axisName] = newValue
             newFamilyName = first.familyName
             newStyleName = f"{first.styleName}_{second.styleName}"
-            postScriptFontName = f"{newFamilyName}-{newStyleName}"
-            instanceUFOFileName = f"{newFamilyName}-{newStyleName}.ufo"
+            # postScriptFontName = f"{newFamilyName}-{newStyleName}"
+            instanceUFOFileName = postScriptNameTransformer(newFamilyName, newStyleName) + ".ufo"
             self.operator.addInstanceDescriptor(
                 familyName=first.familyName,
                 styleName=newStyleName,
                 designLocation=location,
                 filename=instanceUFOFileName,
-                postScriptFontName=postScriptFontName,
+                # postScriptFontName=postScriptFontName,
             )
 
         def updateUFOFilenameFromFontNames(menuItem):
             for item in selectedItems:
                 instanceDescriptor = item["object"]
-                # wrapInstanceDescriptor will create a new default filename
-                instanceDescriptor.filename = None
+                instanceDescriptor.filename = fileNameForInstance(instanceDescriptor)
                 item.update(self.wrapInstanceDescriptor(instanceDescriptor))
             self.instancesChanged()
 
-        def updatePostScriptFontNameFromFontNamesCallback(menuItem):
-            for item in selectedItems:
-                instanceDescriptor = item["object"]
-                psName = f"{instanceDescriptor.familyName}-{instanceDescriptor.styleName}"
-                psName = psName.replace(" ", "")    # does this need to filter more?
-                instanceDescriptor.postScriptFontName = psName
-                item.update(self.wrapInstanceDescriptor(instanceDescriptor))
-            self.instancesChanged()
+        # def updatePostScriptFontNameFromFontNamesCallback(menuItem):
+        #     for item in selectedItems:
+        #         instanceDescriptor = item["object"]
+        #         psName = f"{instanceDescriptor.familyName}-{instanceDescriptor.styleName}"
+        #         psName = psName.replace(" ", "")    # does this need to filter more?
+        #         instanceDescriptor.postScriptFontName = psName
+        #         item.update(self.wrapInstanceDescriptor(instanceDescriptor))
+        #     self.instancesChanged()
 
         def openUFO(menuItem):
             self.openSelectedItem(sender)
@@ -1637,7 +1873,7 @@ class DesignspaceEditorController(Subscriber, WindowController, BaseNotification
             menu.append(dict(title="Reveal Instance in Finder", callback=revealInFinderCallback))
             menu.append("----")
             menu.append(dict(title="Update UFO Filename", callback=updateUFOFilenameFromFontNames))
-            menu.append(dict(title="Update PostScript Font Name", callback=updatePostScriptFontNameFromFontNamesCallback))
+            # menu.append(dict(title="Update PostScript Font Name", callback=updatePostScriptFontNameFromFontNamesCallback))
             menu.append("----")
             menu.append(dict(title="Convert to User Location", callback=convertInstanceToUserLocation))
             menu.append(dict(title="Convert to Design Location", callback=convertInstanceToDesignLocation))
@@ -1761,7 +1997,7 @@ class DesignspaceEditorController(Subscriber, WindowController, BaseNotification
                 column.setMinWidth_(70)
                 column.setMaxWidth_(1000)
                 column.setWidth_(70)
-                column.bind_toObject_withKeyPath_options_("value", listObject._arrayController, f"arrangedObjects.{identifier}", None)
+                column.bind_toObject_withKeyPath_options_("value", listObject._arrayController, f"arrangedObjects.{identifier}", {AppKit.NSCreatesSortDescriptorBindingOption: False})
                 cell = column.dataCell()
                 cell.setDrawsBackground_(False)
                 cell.setStringValue_("")
@@ -1796,10 +2032,19 @@ class DesignspaceEditorController(Subscriber, WindowController, BaseNotification
             for index in reversed(indexes):
                 del items[index]
             rowIndex -= len([index for index in indexes if index < rowIndex])
-            for font in toMove:
-                items.insert(rowIndex, font)
+            for item in toMove:
+                items.insert(rowIndex, item)
                 rowIndex += 1
-            sender.set(items)
+            with self.holdChanges:
+                sender.set(items)
+                # update internal operator objects
+                descriptors = [item["object"] for item in items]
+                if sender.designspaceContent == "axes":
+                    self.operator.axes[:] = descriptors
+                elif sender.designspaceContent == "sources":
+                    self.operator.sources[:] = descriptors
+                elif sender.designspaceContent == "instances":
+                    self.operator.instances[:] = descriptors
         return True
 
     # validation
@@ -1817,6 +2062,16 @@ class DesignspaceEditorController(Subscriber, WindowController, BaseNotification
         return True
 
     # toolbar
+    
+    def toolbarPrepolator(self, sender):
+        import prepolator
+        if self.operator.sources:
+            prepolator.OpenPrepolator(ufoOperator=self.operator)
+
+    def toolbarBatch(self, sender):
+        import batch
+        if self.operator.path:
+            batch.BatchController([self.operator.path])
 
     def toolbarSelectTab(self, sender):
         selectedTab = sender.label()
@@ -1851,7 +2106,7 @@ class DesignspaceEditorController(Subscriber, WindowController, BaseNotification
                 instanceDescriptor = self.unwrapInstanceDescriptor(wrappedInstanceDescriptor)
                 if instanceDescriptor.filename is None:
                     # maybe DSE should always update the ufo name?
-                    instanceDescriptor.filename = os.path.join(getExtensionDefault('instanceFolderName', 'instances'), f"{instanceDescriptor.familyName}-{instanceDescriptor.styleName}.ufo")
+                    instanceDescriptor.filename = fileNameForInstance(instanceDescriptor)
                 instanceDescriptor.path = os.path.abspath(os.path.join(root, instanceDescriptor.filename))
 
             # TODO self.operator.lib[self.mathModelPrefKey] = self.mathModelPref
@@ -1866,10 +2121,14 @@ class DesignspaceEditorController(Subscriber, WindowController, BaseNotification
                 messageText="No axes defined!",
                 informativeText="The designspace needs at least one axis before saving."
             )
-
+        elif any([source.path is None for source in self.operator.sources]):
+            self.showMessage(
+                messageText="Save the sources first!",
+                informativeText="All sources must be saved to disk before saving the designspace."
+            )
         elif self.operator.path is None or AppKit.NSEvent.modifierFlags() & AppKit.NSAlternateKeyMask:
             if self.operator.path is None:
-                # check if w have defined any axes
+                # check if we have defined any axes
                 # can't save without axes
                 # get a filepath first
                 sourcePaths = set([os.path.dirname(source.path) for source in self.operator.sources if source.path])
@@ -1970,12 +2229,14 @@ class DesignspaceEditorController(Subscriber, WindowController, BaseNotification
                 return
 
     @notificationConductor
-    def designspaceEditorSourcesDidChanged(self, notification):
+    def designspaceEditorSourcesDidChange(self, notification):
         if len(self.operator.sources) == len(self.sources.list):
             for item, sourceDescriptor in zip(self.sources.list, self.operator.sources):
                 item.update(self.wrapSourceDescriptor(sourceDescriptor))
         else:
             self.sources.list.set([self.wrapSourceDescriptor(sourceDescriptor) for sourceDescriptor in self.operator.instances])
+
+        self.updateColumnHeadersFromAxes()
 
     # instances notifications
 
@@ -2004,11 +2265,25 @@ class DesignspaceEditorController(Subscriber, WindowController, BaseNotification
         else:
             self.instances.list.set([self.wrapInstanceDescriptor(instanceDescriptor) for instanceDescriptor in self.operator.instances])
 
+    @notificationConductor
+    def designspaceEditorRulesDidChange(self, notification):
+        self.rules.editor.set(rulesParser.extractRules(self.operator))
+
+    @notificationConductor
+    def designspaceEditorLocationLabelsDidChange(self, notification):
+        print(self.locationLabels)
+        self.locationLabels.editor.set(labelsParser.extractLocationLabels(self.operator))
+
+    @notificationConductor
+    def designspaceEditorVariableFontsDidChange(self, notification):
+        self.variableFonts.editor.set(variableFontsParser.extractVariableFonts(self.operator))
+
+
 if __name__ == '__main__':
     pathForBundle = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
     designspaceBundle = ExtensionBundle(path=pathForBundle)
 
     path = "/Users/frederik/Documents/dev/letterror/mutatorSans/MutatorSans.designspace"
     # path = "/Users/frederik/Documents/fontsGit/RoboType/RF.designspace"
-    # path = None
+    path = None
     DesignspaceEditorController(path)

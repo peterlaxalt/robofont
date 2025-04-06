@@ -1,16 +1,16 @@
 import math
-from colorsys import rgb_to_hsv, hsv_to_rgb
 from fontTools.misc.fixedTools import otRound
 from fontParts.world import RGlyph
-
+from fontPens.digestPointPen import DigestPointPen
 from mojo.subscriber import Subscriber, registerGlyphEditorSubscriber, listRegisteredSubscribers
 from mojo.tools import IntersectGlyphWithLine
-from mojo.UI import CurrentGlyphWindow, getGlyphViewDisplaySettings, getDefault, appearanceColorKey
+from mojo.UI import CurrentGlyphWindow, getGlyphViewDisplaySettings, getDefault, appearanceColorKey, inDarkMode
 from mojo.pens import DecomposePointPen
-from fontPens.digestPointPen import DigestPointPen
-
 import merz
 from merz.tools.drawingTools import NSImageDrawingTools
+from mojo.extensions import getExtensionDefault
+from defaults import get_flattened_alpha, get_darkened_blue, EXTENSION_KEY, EXTENSION_DEFAULTS
+
 
 
 def eyeliner_symbol(
@@ -95,6 +95,7 @@ class Eyeliner(Subscriber):
         self.trans_coords = []
         self.overlapper_coords = []
         self.anc_coords = []
+        self.settings = getExtensionDefault(EXTENSION_KEY, EXTENSION_DEFAULTS)
 
         self.f_guide_xs    = {}
         self.f_guide_ys    = {}
@@ -188,45 +189,34 @@ class Eyeliner(Subscriber):
 
 
     def update_color_prefs(self):
-        self.gvbc = getDefault("glyphViewBackgroundColor")
-        self.gvmc = getDefault("glyphViewMarginColor")
-            
-        self.col_font_dim = self.get_flattened_alpha(getDefault(appearanceColorKey("glyphViewFontMetricsStrokeColor")))
-        self.col_glob_guides = self.get_flattened_alpha(getDefault(appearanceColorKey("glyphViewGlobalGuidesColor")))
-        self.col_loc_guides = self.get_flattened_alpha(getDefault(appearanceColorKey("glyphViewLocalGuidesColor")))
+        colorway = "Light"
+        if inDarkMode():
+            colorway = "Dark"
+        self.col_font_dim = self.settings[f"fontDimensions{colorway}ColorWell"]
+        self.col_glob_guides = get_flattened_alpha(getDefault(appearanceColorKey("glyphViewGlobalGuidesColor")))
+        self.col_loc_guides = get_flattened_alpha(getDefault(appearanceColorKey("glyphViewLocalGuidesColor")))
 
-        self.col_blues = self.get_darkened_blue(self.get_flattened_alpha(getDefault(appearanceColorKey("glyphViewBluesColor"))))
-        self.col_fblues = self.get_darkened_blue(self.get_flattened_alpha(getDefault(appearanceColorKey("glyphViewFamilyBluesColor"))))
+        self.col_blues = self.settings[f"blues{colorway}ColorWell"]
+        self.col_fblues = self.settings[f"familyBlues{colorway}ColorWell"]
+        self.col_margins = self.settings[f"margins{colorway}ColorWell"]
         
-        self.col_component = self.get_flattened_alpha(getDefault(appearanceColorKey("glyphViewComponentStrokeColor")))
+        self.col_component = get_flattened_alpha(getDefault(appearanceColorKey("glyphViewComponentStrokeColor")))
 
-        self.col_corner_pt = self.get_flattened_alpha(getDefault(appearanceColorKey("glyphViewCornerPointsFill")))
-        self.col_curve_pt = self.get_flattened_alpha(getDefault(appearanceColorKey("glyphViewCurvePointsFill")))
+        self.col_corner_pt = get_flattened_alpha(getDefault(appearanceColorKey("glyphViewCornerPointsFill")))
+        self.col_curve_pt = get_flattened_alpha(getDefault(appearanceColorKey("glyphViewCurvePointsFill")))
 
 
-    def get_flattened_alpha(self, color):
-        # Flatten transparency of eye, using background color preference
-        r, g, b, a = color
-        r2, g2, b2, a2 = self.gvbc
-        r3 = r2 + (r - r2) * a
-        g3 = g2 + (g - g2) * a
-        b3 = b2 + (b - b2) * a
-        
-        return (r3, g3, b3, 1)
-        
-
-    def get_darkened_blue(self, color):
-        # Darkened version of non-transparent blue zone color preference
-        r, g, b, a = color
-        h, s, v    = rgb_to_hsv(r*255, g*255, b*255)
-        r, g, b    = hsv_to_rgb(h, s + (1 - s)/2, v*0.6)
-        
-        return (r/255, g/255, b/255, 1)
-
-        
     def roboFontDidChangePreferences(self, info):
         self.update_color_prefs()
         self.update_base_sizes()
+        
+        
+    def eyelinerSettingsDidChange(self, info):
+        self.settings = getExtensionDefault(EXTENSION_KEY, EXTENSION_DEFAULTS)
+        self.update_color_prefs()
+        self.check_oncurves()
+        self.check_anchors()
+        self.check_comp()
 
 
     def roboFontAppearanceChanged(self, info):
@@ -297,6 +287,14 @@ class Eyeliner(Subscriber):
         self.check_anchors()
         self.check_comp()
         
+    def glyphEditorDidChangeDisplaySettings(self, info):
+        self.update_blues_display_settings()
+        self.update_oncurve_info()
+        self.update_anchor_info()
+        self.check_oncurves()
+        self.check_anchors()
+        self.check_comp()
+        
         
     def glyphEditorDidMouseDown(self, info):
         '''Support for slice/shape tool eyes'''
@@ -340,11 +338,12 @@ class Eyeliner(Subscriber):
                 self.tool_coords = []
         # Shape tool
         elif self.shape_tool_active:
-            if not self.shape_tool.getRect():
+            try:
+                tx, ty, tw, th = self.shape_tool.getRect()
+            except:
                 self.tool_coords = []
                 self.check_tool_points()
                 return
-            tx, ty, tw, th = self.shape_tool.getRect()
             if self.shape_tool.shape == "rect":
                 self.shape_pt_color = self.col_corner_pt
                 self.shape_pt_shape = "rectangle"
@@ -384,7 +383,10 @@ class Eyeliner(Subscriber):
     glyphEditorFontInfoDidChangeDelay = 0.1
     def glyphEditorFontInfoDidChange(self, info):
         self.update_font_info()
-        
+    fontInfoDidChangeValueDelay = 0.1
+    def fontInfoDidChangeValue(self, info):
+        self.update_font_info()
+
 
     overlapperDidDrawDelay = 0
     def overlapperDidDraw(self, info):
@@ -593,58 +595,83 @@ class Eyeliner(Subscriber):
             # Global horizontal guides
             if otRound(y) in self.f_guide_ys.keys():
                 color = self.f_guide_ys[otRound(y)]
-                self.draw_eye(container, coord, color, angle)
-                alignment_match = True
+                if self.settings["showGlobalGuidesCheckbox"]:
+                    self.draw_eye(container, coord, color, angle)
+                    alignment_match = True
 
             # Local horizontal guides
             elif otRound(y) in self.g_guide_ys.keys():
                 color = self.g_guide_ys[otRound(y)]
-                self.draw_eye(container, coord, color, angle)
-                alignment_match = True
+                if self.settings["showLocalGuidesCheckbox"]:
+                    self.draw_eye(container, coord, color, angle)
+                    alignment_match = True
 
             # Font dimensions
-            elif otRound(y) in self.font_dim:
+            elif otRound(y) in self.font_dim:                
                 color = self.col_font_dim
-                self.draw_eye(container, coord, color, angle)
-                alignment_match = True
+                if self.settings["showFontDimensionsCheckbox"]:
+                    self.draw_eye(container, coord, color, angle)
+                    alignment_match = True
 
             # Blues
             elif otRound(y) in self.blue_vals:
                 if self.blues_on is True:
                     color = self.col_blues
-                    self.draw_eye(container, coord, color, angle)
-                    alignment_match = True
+                    if self.settings["showBluesCheckbox"]:
+                        self.draw_eye(container, coord, color, angle)
+                        alignment_match = True
 
             # Family blues
             elif otRound(y) in self.fblue_vals:
                 if self.fblues_on is True:
                     color = self.col_fblues
-                    self.draw_eye(container, coord, color, angle)
-                    alignment_match = True
+                    if self.settings["showFamilyBluesCheckbox"]:
+                        self.draw_eye(container, coord, color, angle)
+                        alignment_match = True
 
             # ==== VERTICAL STUFF ==== #
             angle = 90
             # Global vertical guides
             if otRound(x) in self.f_guide_xs.keys():
                 color = self.f_guide_xs[otRound(x)]
-                self.draw_eye(container, coord, color, angle)
-                alignment_match = True
+                if self.settings["showGlobalGuidesCheckbox"]:
+                    self.draw_eye(container, coord, color, angle)
+                    alignment_match = True
 
             # Local vertical guides
             elif otRound(x) in self.g_guide_xs.keys():
                 color = self.g_guide_xs[otRound(x)]
-                self.draw_eye(container, coord, color, angle)
-                alignment_match = True
+                if self.settings["showLocalGuidesCheckbox"]:
+                    self.draw_eye(container, coord, color, angle)
+                    alignment_match = True
+                
+            # Margins
+            elif otRound(x) in [0, self.g.width]:
+                color = self.col_margins
+                if self.settings["showMarginsCheckbox"]:
+                    self.draw_eye(container, coord, color, angle)
+                    alignment_match = True
 
             # ==== DIAGONAL STUFF ==== #
-            for gd_info in self.g_guide_diags + self.f_guide_diags:
+            for gd_info in self.g_guide_diags:
                 angle, color = gd_info[1], gd_info[2]
                 result = is_on_diagonal(gd_info[0], angle, (x, y))
                 if result:
                     ## Tested code to clean up the diagonal eye presentation
                     # diag_x, diag_y = get_diagonal_xy((gd.x, gd.y), angle, (x, y))  # Try to avoid the eye looking disjointed from the guide.
-                    self.draw_eye(container, coord, color, angle)
-                    alignment_match = True
+                    if self.settings["showLocalGuidesCheckbox"]:
+                        self.draw_eye(container, coord, color, angle)
+                        alignment_match = True
+                    
+            for gd_info in self.f_guide_diags:
+                angle, color = gd_info[1], gd_info[2]
+                result = is_on_diagonal(gd_info[0], angle, (x, y))
+                if result:
+                    ## Tested code to clean up the diagonal eye presentation
+                    # diag_x, diag_y = get_diagonal_xy((gd.x, gd.y), angle, (x, y))  # Try to avoid the eye looking disjointed from the guide.
+                    if self.settings["showGlobalGuidesCheckbox"]:
+                        self.draw_eye(container, coord, color, angle)
+                        alignment_match = True
                     
         return alignment_match
                 

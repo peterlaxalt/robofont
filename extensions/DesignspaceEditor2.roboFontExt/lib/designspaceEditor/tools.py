@@ -1,9 +1,11 @@
 import AppKit
+import os
+import unicodedata
 from contextlib import contextmanager
 from vanilla.vanillaBase import osVersionCurrent, osVersion12_0
 
 from mojo.events import postEvent
-from mojo.extensions import ExtensionBundle
+from mojo.extensions import getExtensionDefault, ExtensionBundle
 
 
 def holdRecursionDecorator(func):
@@ -111,8 +113,8 @@ class SendNotification:
         self.kwargs[key] = value
 
     @classmethod
-    def single(self, who="", prefix="Did", action="Change", **kwargs):
-        postEvent(f"{self.notificationPrefix}{who}{prefix}{action}", **kwargs)
+    def single(cls, who="", prefix="Did", action="Change", **kwargs):
+        postEvent(f"{cls.notificationPrefix}{who}{prefix}{action}", **kwargs)
 
 
 class UseVarLib:
@@ -196,3 +198,73 @@ class NumberListFormatter(AppKit.NSFormatter):
         except Exception:
             pass
         return False, string, error
+
+
+def postScriptNameTransformer(familyName, styleName):
+    if familyName is None:
+        familyName = ""
+    if styleName is None:
+        styleName = ""
+    def filterPSName(name):
+        # Define the set of forbidden characters
+        forbidden_chars = set('-[](){}<>/%% ')
+
+        # Normalize the Unicode string to NFKD form
+        name = unicodedata.normalize('NFKD', name)
+
+        # Ensure the name is encoded as ASCII
+        name = name.encode("ascii", errors="ignore").decode()
+
+        # Filter out forbidden characters
+        filtered_name = ''.join(c for c in name if 33 <= ord(c) <= 126 and c not in forbidden_chars)
+
+        return filtered_name
+
+    front = filterPSName(familyName)
+    back = filterPSName(styleName)
+
+    # Check if the combined length of front and back exceeds 62 characters
+    if len(front) + len(back) >= 62:
+        # Reduce the length of front and back to meet the requirement, starting with the front
+        while len(front) + len(back) >= 62:
+            if len(front) > 31:
+                front = front[:-1]  # Remove the last character from front
+            elif len(back) > 31: # If the length of front is at least 31, reduce the length of back then
+                back = back[:-1]  # Remove the last character from back
+            else:
+                break
+
+    return "-".join((front, back))
+
+# def identifyingNameTransformer(familyName, styleName):
+#     return " ".join((familyName, styleName))
+
+
+def styleMapNameTransformer(familyName, styleName):
+    keyNames = ["Regular", "Italic", "Bold", "Bold Italic"]
+
+    # Check if the styleName ends with any of the keyNames
+    for keyName in reversed(keyNames):
+        if styleName.endswith(keyName):
+            # Check if the preceding word is "Extra", "Semi", or "Demi"... others could be added, but this is a start
+            preceding_words = styleName[:-len(keyName)].strip().split()
+            if preceding_words and preceding_words[-1] in ["Extra", "Semi", "Demi"]: #TODO: list not exhaustive
+                continue
+            # Remove the keyName from the styleName
+            styleName = styleName[:-len(keyName)].strip()
+            # Set the styleMapStyleName to the keyName
+            styleMapStyleName = keyName
+            break
+    else:
+        # If no keyName is found, set the styleMapStyleName to "Regular"
+        styleMapStyleName = "Regular"
+
+    # Combine the familyName and styleName to create the new familyName
+    familyName = f"{familyName} {styleName}".strip()
+
+    return familyName, styleMapStyleName.lower()
+
+
+def fileNameForInstance(instanceDescriptor):
+    filename = postScriptNameTransformer(instanceDescriptor.familyName, instanceDescriptor.styleName)
+    return os.path.join(getExtensionDefault('instanceFolderName', 'instances'), f"{filename}.ufo")
